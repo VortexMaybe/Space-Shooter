@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 94b3bc831eb8696468c299d0ac9f17cd
+guid: e23a4ec14a60c0b4d99c131dbaa0429c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1353357415257301883
-    second: playerLife1_red_0
+      213: -2625894792039252231
+    second: darkPurple_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerLife1_red_0
+      name: darkPurple_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 33
-        height: 26
+        width: 256
+        height: 256
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b736d86166718c210800000000000000
-      internalID: 1353357415257301883
+      spriteID: 9feb3f66992fe8bd0800000000000000
+      internalID: -2625894792039252231
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 36a85dcaa8a119c4ab17b4404b0368c0
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      playerLife1_red_0: 1353357415257301883
+      darkPurple_0: -2625894792039252231
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

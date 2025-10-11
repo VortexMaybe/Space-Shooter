@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 94b3bc831eb8696468c299d0ac9f17cd
+guid: e6debc1b1e272ee4c9cad250a80014a9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1353357415257301883
-    second: playerLife1_red_0
+      213: -775189467671442140
+    second: photo-1475274047050-1d0c0975c63e_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: playerLife1_red_0
+      name: photo-1475274047050-1d0c0975c63e_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 33
-        height: 26
+        width: 3000
+        height: 1997
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b736d86166718c210800000000000000
-      internalID: 1353357415257301883
+      spriteID: 42dc1d94949fd35f0800000000000000
+      internalID: -775189467671442140
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 36a85dcaa8a119c4ab17b4404b0368c0
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      playerLife1_red_0: 1353357415257301883
+      photo-1475274047050-1d0c0975c63e_0: -775189467671442140
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
