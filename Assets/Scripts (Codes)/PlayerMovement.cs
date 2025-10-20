@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = pos;
 
-        if(Input.GetButtonDown("Firelaser"))
+        if(Input.GetButtonDown("Fire1"))
         {
             Instantiate(laser, transform.position, Quaternion.identity);
         }
