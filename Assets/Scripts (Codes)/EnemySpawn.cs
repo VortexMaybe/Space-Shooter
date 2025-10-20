@@ -4,6 +4,8 @@ public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] float speed = 10f;
 
+    [SerializeField] GameManager manager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
