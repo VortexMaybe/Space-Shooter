@@ -19,6 +19,14 @@ public class EnemySpawn : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.gameObject.tag == "Player")
+        {
+            GameManager.instance.InitiateGameOver();
+        }
+        else
+        {
+            GameManager.instance.IncreaseScore(10);
+        }
         Destroy(gameObject);
         Destroy(collision.gameObject);
     }
