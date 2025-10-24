@@ -2,16 +2,30 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    [SerializeField] float laserSpeed = 1.0f;
-
+    [SerializeField] float laserSpeed = 1.4f;
+    Camera mainCam;
     void Start()
     {
-        
+        mainCam = Camera.main;
     }
 
-    
+
     void Update()
     {
-        transform.position += new Vector3(0, laserSpeed, 0) * Time.deltaTime;
+        transform.position += Vector3.up * laserSpeed * Time.deltaTime;
+
+        Vector3 viewportPos = mainCam.WorldToViewportPoint(transform.position);
+        if (viewportPos.y > 1 || viewportPos.y < 0 || viewportPos.x < 0 || viewportPos.x > 1)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy1"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

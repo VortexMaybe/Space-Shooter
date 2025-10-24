@@ -3,7 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5f;
-
+    [SerializeField] float fireRate = 0.5f;
+    float nextFireTime = 0f;
     public int playerLives = 3;
     [SerializeField] GameObject laser;
 
@@ -29,15 +30,17 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = pos;
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
             Instantiate(laser, transform.position, Quaternion.identity);
+            nextFireTime = Time.time + fireRate;
 
             if (audioSource != null && shootSound != null)
             {
                 audioSource.PlayOneShot(shootSound);
             }
         }
+        
     }
     
     /*public void TakeDamage(int amount)

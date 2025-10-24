@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] GameObject gameOverText; 
+    [SerializeField] GameObject gameOverText;
+    [SerializeField] GameObject gameOverPanel;
 
     private void Awake()
     {
@@ -33,11 +34,27 @@ public class GameManager : MonoBehaviour
     public void IncreaseScore(int amount)
     {
         score += amount;
-        scoreText.text = "Score:" + score;
+        scoreText.text = score.ToString("D7");
     }
-    public void InitiateGameOver() 
+    public void InitiateGameOver()
     {
         isGameOver = true;
         gameOverText.SetActive(true);
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void RetryGame()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+           UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
+        );
+    }
+    
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }

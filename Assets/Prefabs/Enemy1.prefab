@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2780062491088906147}
   m_Layer: 0
   m_Name: Enemy1
-  m_TagString: Untagged
+  m_TagString: Enemy1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
   audioSource: {fileID: 2780062491088906147}
   deathSound: {fileID: 8300000, guid: b85f2cabc5e227548b0c66dc2507d718, type: 3}
   speed: 10.76
+  spawnInvulnerabilityTime: 0.4
   manager: {fileID: 0}
 --- !u!58 &1888959383214028746
 CircleCollider2D:
