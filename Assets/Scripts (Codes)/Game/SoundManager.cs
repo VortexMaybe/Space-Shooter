@@ -1,21 +1,90 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
-    public AudioSource audioSource;
+
+    [Header("Audio Sources")]
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
+    public AudioSource gameSource;
+
+    [Header("Music Clips")]
+    public AudioClip[] mainMenuMusic;
+
+    [Header("Game Music")]
+    public AudioClip[] gameMusic;
+
+    [Header("Game Over")]
+    public AudioClip gameOverMusic;
+
+    [Header("Sound Effects")]
+    public AudioClip buttonClickSound;
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu")
+        {
+            PlayRandomMusic(mainMenuMusic);
+        }
+        else if (scene.name == "GameScene")
+        {
+            PlayRandomMusic(gameMusic);
+        }
+    }
+
+    public void PlayRandomMusic(AudioClip[] clips)
+    {
+        if (clips == null || clips.Length == 0) return;
+
+        // Избира случайна песен
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+
+        if (musicSource.clip == clip) return; // ако вече свири същата песен, не я пуска отново
+
+        musicSource.Stop();
+        musicSource.clip = clip;
+        musicSource.loop = true;
+        musicSource.Play();
+    }
+
+    public void PlayGameOverMusic()
+    {
+        if (gameOverMusic != null && musicSource != null) return;
+        { 
+            musicSource.Stop();
+            musicSource.clip = gameOverMusic;
+            musicSource.loop = true; 
+            musicSource.Play();
+        }
+    }
+
 
     public void PlayOneShot(AudioClip clip)
     {
-        if (clip != null && audioSource != null)
+        if (clip != null && sfxSource != null)
         {
-            audioSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip);
         }
+    }
+
+    public void PlayButtonClick()
+    {
+        PlayOneShot(buttonClickSound);
     }
 }

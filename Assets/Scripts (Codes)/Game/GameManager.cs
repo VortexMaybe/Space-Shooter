@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] GameObject gameOverText;
+    [SerializeField] AudioClip gameOverMusic;
     [SerializeField] GameObject gameOverPanel;
 
     private void Awake()
@@ -42,6 +43,12 @@ public class GameManager : MonoBehaviour
         gameOverText.SetActive(true);
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
+
+        if (SoundManager.instance != null && gameOverMusic != null)
+        {
+            SoundManager.instance.musicSource.Stop();
+            SoundManager.instance.PlayGameOverMusic();
+        }
     }
 
     public void RetryGame()
