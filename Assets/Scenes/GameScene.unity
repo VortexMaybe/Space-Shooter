@@ -316,7 +316,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.8962264, g: 0.8775327, b: 0.48616055, a: 0.6666667}
+    m_NormalColor: {r: 0.8415094, g: 0.74387443, b: 0.19529362, a: 0.8235294}
     m_HighlightedColor: {r: 0.8962264, g: 0.82614034, b: 0.2494215, a: 1}
     m_PressedColor: {r: 0.745283, g: 0.649928, b: 0.36912602, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1200,9 +1200,9 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 1, g: 0.8600692, b: 0.4481132, a: 1}
-    topRight: {r: 0.9716981, g: 0.78017014, b: 0.12375401, a: 1}
-    bottomLeft: {r: 0.754717, g: 0.6575681, b: 0.29547882, a: 1}
+    topLeft: {r: 0.97735846, g: 0.9610391, b: 0.14568162, a: 1}
+    topRight: {r: 1, g: 0.96580154, b: 0.14117648, a: 1}
+    bottomLeft: {r: 1, g: 0.7960329, b: 0.0056602955, a: 1}
     bottomRight: {r: 0.71723115, g: 0.745283, b: 0.08788714, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
@@ -1720,7 +1720,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8431743429756089890, guid: 1087df14641fefd4cb84824a124a4085, type: 3}
       propertyPath: fireRate
-      value: 0.4
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 8431743429756089890, guid: 1087df14641fefd4cb84824a124a4085, type: 3}
       propertyPath: shootSound

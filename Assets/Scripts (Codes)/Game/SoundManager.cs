@@ -65,13 +65,18 @@ public class SoundManager : MonoBehaviour
 
     public void PlayGameOverMusic()
     {
-        if (gameOverMusic != null && musicSource != null) return;
-        { 
-            musicSource.Stop();
-            musicSource.clip = gameOverMusic;
-            musicSource.loop = true; 
-            musicSource.Play();
+        if (gameOverMusic == null || musicSource == null)
+        {
+            Debug.LogWarning("❌ Не е зададен GameOverMusic или липсва MusicSource!");
+            return;
         }
+
+        musicSource.Stop();
+        musicSource.clip = gameOverMusic;
+        musicSource.loop = false; // по-добре да не се повтаря
+        musicSource.Play();
+
+        Debug.Log("▶️ Пускам Game Over музика: " + gameOverMusic.name);
     }
 
 
