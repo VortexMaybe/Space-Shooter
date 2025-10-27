@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -14,15 +14,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip gameOverMusic;
     [SerializeField] GameObject gameOverPanel;
 
+    // 🟢 ДОБАВЕНО: настройки за животи
+    [Header("Player Lives")]
+    [SerializeField] int maxLives = 3;       // максимален брой животи
+    int currentLives;                        // текущи животи
+    [SerializeField] TextMeshProUGUI livesText; // по желание — UI текст за животи
+
     private void Awake()
     {
-       instance = this;
+        instance = this;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        
+        // 🟢 инициализация на животи
+        currentLives = maxLives;
+        UpdateLivesUI();
     }
+
     void Update()
     {
         if (Input.GetButtonDown("Submit") && isGameOver)
@@ -31,12 +40,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 🟢 Функция за загуба на живот
+    public void LoseLife()
+    {
+        if (isGameOver) return;
+
+        currentLives--;
+        UpdateLivesUI();
+
+        if (currentLives <= 0)
+        {
+            InitiateGameOver();
+        }
+        else
+        {
+            Debug.Log("💔 Lost a life! Lives left: " + currentLives);
+            // по желание можеш да добавиш respawn логика тук
+        }
+    }
+
+    void UpdateLivesUI()
+    {
+        if (livesText != null)
+            livesText.text = "Lives: " + currentLives;
+    }
+
     // Update is called once per frame
     public void IncreaseScore(int amount)
     {
         score += amount;
         scoreText.text = score.ToString("D7");
     }
+
     public void InitiateGameOver()
     {
         isGameOver = true;
@@ -54,14 +89,12 @@ public class GameManager : MonoBehaviour
     public void RetryGame()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-           UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
-        );
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 }

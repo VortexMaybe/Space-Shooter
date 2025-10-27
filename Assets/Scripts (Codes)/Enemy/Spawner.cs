@@ -3,30 +3,38 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] float spawnRate = 2f;
-    [SerializeField] GameObject enemyPrefab1;
+    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject enemyLaserPrefab;
 
     float xMin;
     float xMax;
     float ySpawn;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        xMin = Camera.main.ViewportToWorldPoint(new Vector3(.1f, 0, 0)).x;
-        xMax = Camera.main.ViewportToWorldPoint(new Vector3(.9f, 0, 0)).x;
+        // Определяме границите на екрана
+        xMin = Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0, 0)).x;
+        xMax = Camera.main.ViewportToWorldPoint(new Vector3(0.9f, 0, 0)).x;
         ySpawn = Camera.main.ViewportToWorldPoint(new Vector3(0, 1.25f, 0)).y;
 
-        InvokeRepeating("SpawnEnemy", 1f, spawnRate);
+        // Пускаме spawn цикъл
+        InvokeRepeating(nameof(SpawnEnemyAndLaser), 1f, spawnRate);
     }
 
-    // Update is called once per frame
-    void Update()
+    void SpawnEnemyAndLaser()
     {
-        
-    }
+        float randX = Random.Range(xMin, xMax);
+        Vector3 enemyPos = new Vector3(randX, ySpawn, 0);
 
-    void SpawnEnemy()
-    { 
-         float randX = Random.Range(xMin, xMax);
-         Instantiate(enemyPrefab1, new Vector3(randX, ySpawn, 0), Quaternion.identity);
+        // Spawn-ваме врага
+        GameObject enemy = Instantiate(enemyPrefab, enemyPos, Quaternion.identity);
+
+        // Spawn-ваме лазера малко под врага
+        if (enemyLaserPrefab != null)
+        {
+            Vector3 laserPos = enemyPos + Vector3.down * 0.5f;
+            Instantiate(enemyLaserPrefab, laserPos, Quaternion.identity);
+        }
     }
 }
+    
