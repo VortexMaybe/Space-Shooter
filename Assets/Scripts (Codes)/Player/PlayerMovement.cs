@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -5,9 +6,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5f;
     [SerializeField] float fireRate = 0.5f;
     float nextFireTime = 0f;
-    public int playerLives = 3;
     [SerializeField] GameObject laser;
-
     public AudioSource audioSource;
     public AudioClip shootSound;
 
@@ -40,16 +39,6 @@ public class PlayerMovement : MonoBehaviour
                 audioSource.PlayOneShot(shootSound);
             }
         }
-        
+
     }
-    
-    /*public void TakeDamage(int amount)
-    {
-        playerLives -= amount;
-        if (playerLives <= 0)
-        {
-            GameManager.instance.InitiateGameOver();
-            gameObject.SetActive(false);
-        }
-    }*/
 }

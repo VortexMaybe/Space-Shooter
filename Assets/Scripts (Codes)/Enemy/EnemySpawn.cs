@@ -4,13 +4,15 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip deathSound;
+
+    float customVolume = 5.6f;
+    [SerializeField] AudioClip deathSound;
     [SerializeField] float speed = 3f;
     [SerializeField] float spawnInvulnerabilityTime = 1.0f;
 
     [Header("Shooting Settings")]
-    [SerializeField] GameObject enemyLaserPrefab;   // Префаб на вражеския лазер
-    [SerializeField] float shootInterval = 2.5f;    // Колко често стреля
+    [SerializeField] GameObject enemyLaserPrefab;
+    [SerializeField] float shootInterval = 2.5f;
 
     bool canBeHit = false;
 
@@ -33,7 +35,6 @@ public class EnemySpawn : MonoBehaviour
 
     IEnumerator ShootRoutine()
     {
-        // врагът ще стреля докато е жив
         while (true)
         {
             yield return new WaitForSeconds(shootInterval);
@@ -49,26 +50,18 @@ public class EnemySpawn : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void EnemyDestroyedByPlayerLaser()
     {
         if (!canBeHit) return;
 
-        if (collision.CompareTag("Player"))
-        {
-            GameManager.instance.InitiateGameOver();
-        }
-        else if (collision.CompareTag("Laser")) // Лазерът на играча
-        {
-            GameManager.instance.IncreaseScore(10);
+        GameManager.instance.IncreaseScore(10);
 
-            if (audioSource != null && deathSound != null)
-            {
-                SoundManager.instance.PlayOneShot(deathSound);
-            }
+        if (deathSound != null)
+        {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
         }
 
-        Destroy(collision.gameObject);
         Destroy(gameObject);
-        Debug.Log("Enemy fired a laser!");
+
     }
 }

@@ -22,6 +22,28 @@ public class SoundManager : MonoBehaviour
     [Header("Sound Effects")]
     public AudioClip buttonClickSound;
 
+    private void Start()
+    {
+        float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
+        musicSource.volume = musicVolume;
+        sfxSource.volume = sfxVolume;
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        musicSource.volume = volume;
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        sfxSource.volume = volume;
+        PlayerPrefs.SetFloat("SFXVolume", volume);
+    }
+
+
     private void Awake()
     {
         if (instance == null)
