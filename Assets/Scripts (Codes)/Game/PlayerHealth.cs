@@ -10,8 +10,12 @@ public class PlayerHealth : MonoBehaviour
     public float gameOverlayDelay = 3f;
 
     [Header("Invulnerability VFX")]
-    [SerializeField] public float invulnerabilityDuration = 1f;
-    [SerializeField] private float blinkInterval = 0.2f;
+    [SerializeField] public float invulnerabilityDuration = 1.5f;
+    [SerializeField] private float blinkInterval = 0.1f;
+
+    [Header("Collision Layers")]
+    [SerializeField] private int invulnerableLayer;
+    private int defaultLayer;
 
     private SpriteRenderer spriteRenderer;
 
@@ -19,6 +23,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
+        defaultLayer = gameObject.layer;
+
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (audioSource == null)
@@ -39,15 +45,18 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+       
         if (isInvulnerable) return;
 
+        
         isInvulnerable = true;
 
         if (GameManager.instance != null)
         {
             GameManager.instance.ResetCombo();
         }
-        if (playerLifes <= 0) return;
+
+       
 
         playerLifes -= amount;
 
@@ -61,26 +70,27 @@ public class PlayerHealth : MonoBehaviour
             lifesUI.UpdateLifes(playerLifes);
         }
 
+       
         if (playerLifes <= 0)
         {
+            
+            StopAllCoroutines();
             StartCoroutine(HandleDelayedDeath());
-        }
-
-        if (GameManager.instance != null)
-        {
-            GameManager.instance.ResetCombo();
         }
         else
         {
+           
             StartCoroutine(InvulnerabilityFlicker());
         }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy1") || collision.CompareTag("EnemyLaser"))
         {
-            TakeDamage(1);
+            if (isInvulnerable) return;
             Destroy(collision.gameObject);
+            TakeDamage(1);
         }
     }
 
@@ -88,15 +98,21 @@ public class PlayerHealth : MonoBehaviour
     {
         float startTime = Time.time;
 
-        while (Time.time < startTime + invulnerabilityDuration)
+        gameObject.layer = invulnerableLayer;
+        try
         {
-            spriteRenderer.enabled = !spriteRenderer.enabled;
-            yield return new WaitForSeconds(blinkInterval);
+            while (Time.time < startTime + invulnerabilityDuration)
+            {
+                spriteRenderer.enabled = !spriteRenderer.enabled;
+                yield return new WaitForSeconds(blinkInterval);
+            }
         }
-
-        spriteRenderer.enabled = true;
-        isInvulnerable = false;
-
+        finally
+        {
+            gameObject.layer = defaultLayer;
+            spriteRenderer.enabled = true;
+            isInvulnerable = false;
+        }
     }
 
     IEnumerator HandleDelayedDeath()
@@ -105,9 +121,7 @@ public class PlayerHealth : MonoBehaviour
 
         yield return new WaitForSeconds(gameOverlayDelay);
 
-        GameManager gameManager = FindAnyObjectByType<GameManager>();
-
-        if (gameManager != null)
+        if (GameManager.instance != null)
         {
             GameManager.instance.InitiateGameOver();
         }

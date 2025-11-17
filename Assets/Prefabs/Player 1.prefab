@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -590947418329346848, guid: 33ca12fc89ab6fe419772d7b823079e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -129,6 +129,9 @@ MonoBehaviour:
   audioSource: {fileID: 5761392546243215225}
   damageSound: {fileID: 8300000, guid: 1683d0bf9ba345945add44400e14c119, type: 3}
   gameOverlayDelay: 0.2
+  invulnerabilityDuration: 1.5
+  blinkInterval: 0.1
+  invulnerableLayer: 0
 --- !u!58 &4980683614910592532
 CircleCollider2D:
   m_ObjectHideFlags: 0

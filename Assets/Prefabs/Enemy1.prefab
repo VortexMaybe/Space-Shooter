@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: -6323354973626525621, guid: ac8f3b78c872d964792c9d8348cbb10f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -115,6 +115,7 @@ MonoBehaviour:
   minExperience: 5
   maxExperience: 13
   baseScoreValue: 1
+  floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
 --- !u!58 &1888959383214028746
 CircleCollider2D:
   m_ObjectHideFlags: 0

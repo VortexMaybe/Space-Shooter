@@ -1,6 +1,7 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor.EditorTools;
-using UnityEngine;
+using UnityEngine; 
 
 public class EnemySpawn : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class EnemySpawn : MonoBehaviour
 
     [Header("Score")]
     [SerializeField] private int baseScoreValue = 10;
+    [SerializeField] private GameObject floatingTextPrefab;
 
     bool canBeHit = false;
 
@@ -64,28 +66,39 @@ public class EnemySpawn : MonoBehaviour
     {
         if (!canBeHit) return;
 
-        GameManager.instance.AddScore(10);
+        int scoreAdded = 0;
+        if (GameManager.instance != null)
+        {
+            scoreAdded = GameManager.instance.AddScore(baseScoreValue);
+        }
 
         ExperienceManager expManager = FindAnyObjectByType<ExperienceManager>();
-
         if (expManager != null)
         {
-            int experienceGained = Random.Range(minExperience, maxExperience);
-
+            int experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
             expManager.AddExperience(experienceGained);
         }
 
+
+        if (floatingTextPrefab != null)
+        {
+            GameObject ft = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+
+            FloatingText ftScript = ft.GetComponent<FloatingText>();
+
+            if (ftScript != null)
+            {
+                ftScript.Initialize(scoreAdded, Color.yellow); // Смених на Yellow, за да се откроява
+            }
+        }
+
+        
         if (deathSound != null)
         {
             AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
         }
 
-        if (GameManager.instance != null)
-        {
-            GameManager.instance.AddScore(baseScoreValue);
-        }
-
+        
         Destroy(gameObject);
-
     }
 }
