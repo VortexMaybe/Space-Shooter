@@ -9,8 +9,18 @@ public class PlayerHealth : MonoBehaviour
     public AudioClip damageSound;
     public float gameOverlayDelay = 3f;
 
+    [Header("Invulnerability VFX")]
+    [SerializeField] public float invulnerabilityDuration = 1f;
+    [SerializeField] private float blinkInterval = 0.2f;
+
+    private SpriteRenderer spriteRenderer;
+
+    private bool isInvulnerable = false;
+
     void Start()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -29,6 +39,14 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (isInvulnerable) return;
+
+        isInvulnerable = true;
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.ResetCombo();
+        }
         if (playerLifes <= 0) return;
 
         playerLifes -= amount;
@@ -47,6 +65,15 @@ public class PlayerHealth : MonoBehaviour
         {
             StartCoroutine(HandleDelayedDeath());
         }
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.ResetCombo();
+        }
+        else
+        {
+            StartCoroutine(InvulnerabilityFlicker());
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -57,8 +84,25 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    public IEnumerator InvulnerabilityFlicker()
+    {
+        float startTime = Time.time;
+
+        while (Time.time < startTime + invulnerabilityDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+
+        spriteRenderer.enabled = true;
+        isInvulnerable = false;
+
+    }
+
     IEnumerator HandleDelayedDeath()
     {
+        spriteRenderer.enabled = false;
+
         yield return new WaitForSeconds(gameOverlayDelay);
 
         GameManager gameManager = FindAnyObjectByType<GameManager>();

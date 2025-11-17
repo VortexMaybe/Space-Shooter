@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
@@ -13,6 +14,15 @@ public class EnemySpawn : MonoBehaviour
     [Header("Shooting Settings")]
     [SerializeField] GameObject enemyLaserPrefab;
     [SerializeField] float shootInterval = 2.5f;
+
+    [Header("Experience")]
+    [Tooltip("Най-малкото XP, който врагът да дава")]
+    [SerializeField] private int minExperience = 5;
+    [Tooltip("Най-много XP, който врагът да дава")]
+    [SerializeField] private int maxExperience = 13;
+
+    [Header("Score")]
+    [SerializeField] private int baseScoreValue = 10;
 
     bool canBeHit = false;
 
@@ -54,11 +64,25 @@ public class EnemySpawn : MonoBehaviour
     {
         if (!canBeHit) return;
 
-        GameManager.instance.IncreaseScore(10);
+        GameManager.instance.AddScore(10);
+
+        ExperienceManager expManager = FindAnyObjectByType<ExperienceManager>();
+
+        if (expManager != null)
+        {
+            int experienceGained = Random.Range(minExperience, maxExperience);
+
+            expManager.AddExperience(experienceGained);
+        }
 
         if (deathSound != null)
         {
             AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
+        }
+
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.AddScore(baseScoreValue);
         }
 
         Destroy(gameObject);

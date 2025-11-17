@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +16,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioClip gameOverMusic;
     [SerializeField] GameObject gameOverPanel;
 
+    [Header("Combo Settings")]
+    [SerializeField] private float comboMultiplierBase = 1.2f;
+    [SerializeField] private float rollDuration = 0.4f;
+    [SerializeField] private int comboBonusPerLevel = 4;
+
+    private int comboCount = 0;
+    private Coroutine scoreRollCoroutine;
+
     private void Awake()
     {
         instance = this;
@@ -21,7 +31,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        score = 0;
+        isGameOver = false;
+        comboCount = 0;
 
+        scoreText.text = score.ToString("D7");
     }
 
     void Update()
@@ -31,10 +45,58 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
-    public void IncreaseScore(int amount)
+    public void AddScore(int baseScore)
     {
-        score += amount;
-        scoreText.text = score.ToString("D7");
+        comboCount++;
+
+        int bonusPoints = comboBonusPerLevel * (comboCount - 1);
+
+        int scoreToAdd = baseScore + bonusPoints;
+
+        int oldScore = score;
+        score += scoreToAdd;
+
+        if (scoreRollCoroutine != null)
+        {
+            StopCoroutine(scoreRollCoroutine);
+        }
+        scoreRollCoroutine = StartCoroutine(RollScoreUI(oldScore, score));
+    }
+
+    public void ResetCombo()
+    {
+        if (comboCount > 0)
+        {
+            comboCount = 0;
+            Debug.Log("Combo Reset BITCH!");
+        }
+    }
+
+    private IEnumerator RollScoreUI(int startValue, int endValue)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < rollDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / rollDuration;
+
+            int currentValue = Mathf.RoundToInt(Mathf.Lerp(startValue, endValue, t));
+
+            if (t < 1f)
+            {
+                int randomDelta = UnityEngine.Random.Range(1, 1000);
+                scoreText.text = (currentValue + randomDelta).ToString("D7");
+            }
+            else
+            {
+                scoreText.text = endValue.ToString("D7");
+            }
+
+            yield return null;
+        }
+
+        scoreText.text = endValue.ToString("D7");
     }
 
     public void InitiateGameOver()
@@ -49,6 +111,8 @@ public class GameManager : MonoBehaviour
             SoundManager.instance.musicSource.Stop();
             SoundManager.instance.PlayGameOverMusic();
         }
+
+        ResetCombo();
     }
 
     public void RetryGame()

@@ -112,6 +112,9 @@ MonoBehaviour:
   spawnInvulnerabilityTime: 0.6
   enemyLaserPrefab: {fileID: 4791258693114828447, guid: d22200d7d0d953240b2de2f7860f1c5b, type: 3}
   shootInterval: 2.5
+  minExperience: 5
+  maxExperience: 13
+  baseScoreValue: 1
 --- !u!58 &1888959383214028746
 CircleCollider2D:
   m_ObjectHideFlags: 0
