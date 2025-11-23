@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int comboBonusPerLevel = 4;
 
     [Header("Combo Visuals")]
-    [SerializeField] private float pulseScale = 1.5f;     
-    [SerializeField] private float pulseDuration = 0.1f;  
+    [SerializeField] private float pulseScale = 1.5f;
+    [SerializeField] private float pulseDuration = 0.1f;
 
     private int comboCount = 0;
     private Coroutine scoreRollCoroutine;
@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             comboPulseCoroutine = StartCoroutine(ComboPulseEffect());
         }
 
-        return scoreToAdd; 
+        return scoreToAdd;
     }
 
     public void ResetCombo()
@@ -104,10 +104,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
     private IEnumerator ComboPulseEffect()
     {
-        
+
         float elapsed = 0f;
         while (elapsed < pulseDuration)
         {
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        
+
         elapsed = 0f;
         while (elapsed < pulseDuration)
         {
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-       
+
         comboText.transform.localScale = Vector3.one;
     }
 
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
         if (SoundManager.instance != null && gameOverMusic != null)
         {
             SoundManager.instance.musicSource.Stop();
-           
+
         }
 
         ResetCombo();
