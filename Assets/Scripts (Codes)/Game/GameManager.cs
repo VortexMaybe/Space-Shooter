@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI comboText;
     [SerializeField] GameObject gameOverText;
     [SerializeField] GameObject gameOverPanel;
+    [SerializeField] TextMeshProUGUI finalScoreDisplay;
 
     [Header("Audio")]
     [SerializeField] AudioClip gameOverMusic;
@@ -164,6 +165,11 @@ public class GameManager : MonoBehaviour
         gameOverText.SetActive(true);
         gameOverPanel.SetActive(true);
         Time.timeScale = 0f;
+
+        if (finalScoreDisplay != null)
+        {
+            finalScoreDisplay.text = "YOUR SCORE: " + score.ToString("D7");
+        }
 
         if (SoundManager.instance != null && gameOverMusic != null)
         {
