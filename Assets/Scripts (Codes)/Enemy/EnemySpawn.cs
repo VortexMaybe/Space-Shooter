@@ -17,8 +17,8 @@ public class EnemySpawn : MonoBehaviour
     // [Движение]
     [Header("Movement")]
     [SerializeField] float verticalSpeed = 3f;
-    [SerializeField] float sinFrequency = 1.5f;
-    [SerializeField] float sinMagnitude = 1.0f;
+    [SerializeField] float maxMovementAngle = 35f;
+    [SerializeField] float rotationLerpSpeed = 1.5f;
     [SerializeField] float spawnInvulnerabilityTime = 1.0f;
 
     [Header("Shooting Settings")]
@@ -34,15 +34,38 @@ public class EnemySpawn : MonoBehaviour
     // [Вътрешни Променливи]
     private int currentHealth;
     private bool canBeHit = false;
-    private float initialX;
     private SpriteRenderer spriteRenderer;
+
+    // Граници
+    private float lowerBoundY;
+    private float leftBoundX;
+    private float rightBoundX;
+
+    private Vector3 movementDirection;
+    private Vector3 targetDirection;
 
     void Start()
     {
         currentHealth = maxHealth;
-        initialX = transform.position.x;
-        // КРИТИЧНО: Взимаме SpriteRenderer за примигване. Увери се, че врагът има такъв компонент!
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // 1. ✅ ИЗЧИСЛЯВАНЕ НА ГРАНИЦИ (КОРИГИРАНО):
+        // Долна граница: Остава широка (3.5f) за унищожение
+        lowerBoundY = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).y - 3.5f;
+
+        // Лява граница: Намаляваме буфера до 0.1f, за да отскача по-рано.
+        leftBoundX = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0)).x - 0.1f;
+
+        // Дясна граница: Намаляваме буфера до 0.1f, за да отскача по-рано.
+        rightBoundX = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, 0)).x + 0.1f;
+
+        // 2. ДЕФИНИРАНЕ НА ЦЕЛЕВИЯ ЪГЪЛ
+        float randomZRotation = Random.Range(-maxMovementAngle, maxMovementAngle);
+        targetDirection = Quaternion.Euler(0, 0, randomZRotation) * Vector3.down;
+
+        // 3. НАЧАЛНА ПОСОКА: ПРАВО НАДОЛУ (0 градуса)
+        movementDirection = Vector3.down;
+        transform.rotation = Quaternion.identity;
 
         StartCoroutine(EnableHitAfterDelay());
         StartCoroutine(ShootRoutine());
@@ -50,13 +73,58 @@ public class EnemySpawn : MonoBehaviour
 
     void Update()
     {
-        // 1. Вертикално Движение
-        transform.position -= new Vector3(0, verticalSpeed, 0) * Time.deltaTime;
+        // 1. ПЛАВНО ПРЕМИНАВАНЕ КЪМ ЦЕЛЕВИЯ ЪГЪЛ
+        movementDirection = Vector3.Lerp(movementDirection, targetDirection, rotationLerpSpeed * Time.deltaTime);
 
-        // 2. Синусоидално (Вълнообразно) Движение
-        float newX = initialX + Mathf.Sin(Time.time * sinFrequency) * sinMagnitude;
-        transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+        // 2. КОРЕКЦИЯ НА ПОСОКАТА (ОТБЛЪСКВАНЕ)
+        bool hitLeft = transform.position.x < leftBoundX;
+        bool hitRight = transform.position.x > rightBoundX;
+
+        if (hitLeft || hitRight)
+        {
+            // Обръщаме хоризонталната посока
+            movementDirection.x = -movementDirection.x;
+
+            // Преместваме врага обратно във видимата зона с един кадър,
+            // за да предотвратим засядане.
+            if (hitLeft)
+            {
+                // Позиционираме го точно на границата
+                transform.position = new Vector3(leftBoundX, transform.position.y, 0);
+            }
+            else // hitRight
+            {
+                // Позиционираме го точно на границата
+                transform.position = new Vector3(rightBoundX, transform.position.y, 0);
+            }
+
+            // Актуализираме целевата посока (targetDirection)
+            targetDirection.x = -targetDirection.x;
+        }
+
+
+        // 3. ЗАВЪРТАНЕ НА СПРАЙТА (плавно)
+        if (movementDirection != Vector3.zero)
+        {
+            float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg;
+            // Адаптираме ъгъла (добавяме 90) за да сочи надолу
+            Quaternion targetRotation = Quaternion.Euler(0, 0, angle + 90);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
+                                                         rotationLerpSpeed * 10f * Time.deltaTime);
+        }
+
+        // 4. ДВИЖЕНИЕ В ТЕКУЩАТА ПОСОКА
+        transform.position += movementDirection * verticalSpeed * Time.deltaTime;
+
+        // 5. ПРОВЕРКА ЗА УНИЩОЖЕНИЕ (Само отдолу!)
+        if (transform.position.y < lowerBoundY)
+        {
+            Destroy(gameObject);
+        }
     }
+
+    // ... (Останалите методи) ...
 
     IEnumerator EnableHitAfterDelay()
     {
@@ -89,7 +157,6 @@ public class EnemySpawn : MonoBehaviour
 
         if (currentHealth > 0)
         {
-            // ВРАГЪТ Е РАНЕН: Примигва и дава малко точки
             StartCoroutine(FlickerOnHit());
 
             if (GameManager.instance != null)
@@ -107,11 +174,10 @@ public class EnemySpawn : MonoBehaviour
             scoreAdded = GameManager.instance.AddScore(baseScoreValue);
         }
 
-        int experienceGained = 0;
         ExperienceManager expManager = FindAnyObjectByType<ExperienceManager>();
         if (expManager != null)
         {
-            experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
+            int experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
             expManager.AddExperience(experienceGained);
         }
 
@@ -122,7 +188,7 @@ public class EnemySpawn : MonoBehaviour
 
             if (ftScript != null)
             {
-                ftScript.Initialize(experienceGained, Color.magenta);
+                ftScript.Initialize(scoreAdded, Color.yellow);
             }
         }
 
