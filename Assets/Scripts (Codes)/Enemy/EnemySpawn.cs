@@ -107,10 +107,11 @@ public class EnemySpawn : MonoBehaviour
             scoreAdded = GameManager.instance.AddScore(baseScoreValue);
         }
 
+        int experienceGained = 0;
         ExperienceManager expManager = FindAnyObjectByType<ExperienceManager>();
         if (expManager != null)
         {
-            int experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
+            experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
             expManager.AddExperience(experienceGained);
         }
 
@@ -121,7 +122,7 @@ public class EnemySpawn : MonoBehaviour
 
             if (ftScript != null)
             {
-                ftScript.Initialize(scoreAdded, Color.yellow);
+                ftScript.Initialize(experienceGained, Color.magenta);
             }
         }
 
