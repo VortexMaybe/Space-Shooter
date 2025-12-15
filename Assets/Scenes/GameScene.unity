@@ -148,9 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95edc7fc7978a5140babed7c68c94e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  spawnRate: 1.1
+  spawnRate: 1.8
   enemyPrefab: {fileID: 484449280977013633, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
   enemyLaserPrefab: {fileID: 4791258693114828447, guid: d22200d7d0d953240b2de2f7860f1c5b, type: 3}
+  minDistanceX: 1.5
 --- !u!4 &4176114
 Transform:
   m_ObjectHideFlags: 0
@@ -1681,8 +1682,8 @@ MonoBehaviour:
   gameOverMusic: {fileID: 8300000, guid: 66a2a8af0bd2c6d44ab8c66a5e5a38fe, type: 3}
   rollDuration: 0.3
   comboBonusPerLevel: 5
-  pulseScale: 1.3
-  pulseDuration: 0.14
+  pulseScale: 1.24
+  pulseDuration: 0.11
 --- !u!1 &926094978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2964,8 +2965,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 50
-      value: 10000
+      time: 89.75001
+      value: 9262.906
       inSlope: 2
       outSlope: 2
       tangentMode: 0
@@ -3037,7 +3038,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -904}
+  m_AnchoredPosition: {x: 0, y: -885}
   m_SizeDelta: {x: 612.8099, y: 34.2776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1947659388

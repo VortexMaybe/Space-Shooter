@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ExperienceManager : MonoBehaviour
 {
+    public static ExperienceManager instance;
+    public delegate void LevelUpAction();
+    public static event LevelUpAction OnLevelUp;
+
     [Header("Experience")]
     [SerializeField] AnimationCurve experienceCurve;
 
@@ -22,6 +27,11 @@ public class ExperienceManager : MonoBehaviour
 
     void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+
         UpdateLevel();
     }
 
@@ -34,12 +44,16 @@ public class ExperienceManager : MonoBehaviour
 
     void CheckForLevelUp()
     {
-        if (totalExperience >= nextLevelsExperience)
+        while (totalExperience >= nextLevelsExperience)
         {
             currentLevel++;
             UpdateLevel();
 
             PlayLevelUpSound();
+            if (OnLevelUp != null)
+            {
+                OnLevelUp.Invoke();
+            }
         }
     }
 

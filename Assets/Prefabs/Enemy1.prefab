@@ -108,13 +108,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawn
   audioSource: {fileID: 2780062491088906147}
   deathSound: {fileID: 8300000, guid: 81ea8898e3ddee14f84c2e9e14d36b1d, type: 3}
-  speed: 5.3
+  customVolume: 5.6
+  maxHealth: 2
+  hitFlickerDuration: 0.2
+  verticalSpeed: 3
+  maxMovementAngle: 30
+  rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 0.6
+  enableWavyMovement: 1
+  sinFrequency: 2
+  sinMagnitude: 0.8
   enemyLaserPrefab: {fileID: 4791258693114828447, guid: d22200d7d0d953240b2de2f7860f1c5b, type: 3}
-  shootInterval: 2.4
-  minExperience: 5
+  shootInterval: 2.1
+  minExperience: 2
   maxExperience: 10
-  baseScoreValue: 1
+  baseScoreValue: 3
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
 --- !u!58 &1888959383214028746
 CircleCollider2D:

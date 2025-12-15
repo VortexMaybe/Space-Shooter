@@ -174,7 +174,8 @@ public class GameManager : MonoBehaviour
         if (SoundManager.instance != null && gameOverMusic != null)
         {
             SoundManager.instance.musicSource.Stop();
-
+            SoundManager.instance.musicSource.clip = gameOverMusic;
+            SoundManager.instance.musicSource.Play();
         }
 
         ResetCombo();
