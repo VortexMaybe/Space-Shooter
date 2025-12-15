@@ -14,7 +14,7 @@ public class ExperienceManager : MonoBehaviour
     [Header("Experience")]
     [SerializeField] AnimationCurve experienceCurve;
 
-    int currentLevel, totalExperience;
+    public int currentLevel, totalExperience;
     int previousLevelsExperience, nextLevelsExperience;
 
     [Header("Audio")]
@@ -42,6 +42,10 @@ public class ExperienceManager : MonoBehaviour
         UpdateInterface();
     }
 
+    public int GetCurrentLevel()
+    {
+        return currentLevel;
+    }
     void CheckForLevelUp()
     {
         while (totalExperience >= nextLevelsExperience)

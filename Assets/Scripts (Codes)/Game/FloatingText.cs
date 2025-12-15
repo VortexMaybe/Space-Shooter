@@ -3,9 +3,9 @@ using TMPro;
 
 public class FloatingText : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 1.5f;     
-    [SerializeField] private float duration = 0.8f;      
-
+    [SerializeField] private float moveSpeed = 1.5f;
+    [SerializeField] private float duration = 0.8f;
+     
     private TextMeshPro textMesh;
     private float timer;
 
@@ -19,11 +19,11 @@ public class FloatingText : MonoBehaviour
         }
     }
 
-    public void Initialize(int score, Color color)
+    public void Initialize(int value, Color color)
     {
         if (textMesh != null)
         {
-            textMesh.text = $"+{score}";
+            textMesh.text = $"+{value} XP";
             textMesh.color = color;
         }
         else
