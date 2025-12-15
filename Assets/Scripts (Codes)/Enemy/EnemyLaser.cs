@@ -2,11 +2,16 @@
 
 public class EnemyLaser : MonoBehaviour
 {
-    [SerializeField] float speed = 5f;
+    // ✅ ПРОМЕНЕНО: Правим скоростта публична, за да може да се задава от Prefab
+    [SerializeField] public float speed = 5f;
     [SerializeField] float lifeTime = 3f;
 
     [Header("Насочване")]
     [SerializeField] float maxAngleDeviation = 45f;
+
+    // ✅ НОВА ПРОМЕНЛИВА: Щетата, която нанася този лазер
+    [Header("Нанасяна щета")]
+    [SerializeField] public int damageToPlayer = 1; // Default е 1 живот
 
     private Vector3 direction;
 
@@ -16,13 +21,13 @@ public class EnemyLaser : MonoBehaviour
 
         if (player != null)
         {
-
             Vector3 targetDirection = (player.transform.position - transform.position).normalized;
 
             Vector3 downDirection = Vector3.down;
 
+            // Логика за насочване (запазена)
             direction = Vector3.RotateTowards(downDirection, targetDirection,
-                                             maxAngleDeviation * Mathf.Deg2Rad, 0f);
+                                              maxAngleDeviation * Mathf.Deg2Rad, 0f);
 
             direction.Normalize();
 
@@ -39,6 +44,7 @@ public class EnemyLaser : MonoBehaviour
 
     void Update()
     {
+        // ✅ ИЗПОЛЗВАМЕ ПРОМЕНЛИВАТА speed
         transform.position += direction * speed * Time.deltaTime;
     }
 
@@ -50,7 +56,8 @@ public class EnemyLaser : MonoBehaviour
 
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(1);
+                // ✅ ИЗПОЛЗВАМЕ НОВАТА ПРОМЕНЛИВА ЗА ЩЕТА
+                playerHealth.TakeDamage(damageToPlayer);
             }
 
             Destroy(gameObject);
