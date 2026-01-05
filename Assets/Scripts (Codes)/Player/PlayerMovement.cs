@@ -1,14 +1,47 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections; // Трябва за Coroutines (Rapid Fire, Speed Boost)
 
 public class PlayerMovement : MonoBehaviour
 {
+    // ====================================================================
+    // 1. SINGLETON (ЗА ДОСТЪП ОТ PowerUp.cs)
+    // ====================================================================
+    public static PlayerMovement instance;
+
+    // ====================================================================
+    // 2. ДВИЖЕНИЕ И АТАКА
+    // ====================================================================
     public float speed = 5f;
     [SerializeField] float fireRate = 0.5f;
     float nextFireTime = 0f;
     [SerializeField] GameObject laser;
+
+    // Аудио
     public AudioSource audioSource;
     public AudioClip shootSound;
+
+    // ====================================================================
+    // 3. ПРОМЕНЛИВИ ЗА POWER-UPS
+    // ====================================================================
+    private float originalSpeed;
+    private float originalFireRate;
+
+    // Инициализация на Singleton и оригиналните стойности
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Полезно, ако преминаваш през сцени
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        originalSpeed = speed;
+        originalFireRate = fireRate;
+    }
 
     void Update()
     {
@@ -29,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = pos;
 
+        // Логика за стрелба
         if (Input.GetButton("Fire1") && Time.time >= nextFireTime)
         {
             Instantiate(laser, transform.position, Quaternion.identity);
@@ -39,6 +73,105 @@ public class PlayerMovement : MonoBehaviour
                 audioSource.PlayOneShot(shootSound);
             }
         }
+    }
 
+    // ====================================================================
+    // 4. POWER-UP АКТИВАЦИЯ
+    // ====================================================================
+
+    // ВАЖНО: PowerUpType и PowerUpTier трябва да бъдат дефинирани 
+    // в PowerUp.cs ИЗВЪН класа, за да могат да се виждат тук.
+    public void ActivatePowerUp(PowerUpType type, PowerUpTier tier)
+    {
+        float effectMultiplier = 1f;
+
+        // Изчисляваме мултипликатора въз основа на качеството (Tier)
+        switch (tier)
+        {
+            case PowerUpTier.Bronze: effectMultiplier = 1.0f; break;
+            case PowerUpTier.Silver: effectMultiplier = 1.5f; break;
+            case PowerUpTier.Gold: effectMultiplier = 2.0f; break;
+        }
+
+        // Прилагаме ефекта
+        switch (type)
+        {
+            case PowerUpType.RapidFire:
+                // Увеличава продължителността на ефекта
+                StartCoroutine(RapidFireRoutine(5f * effectMultiplier));
+                break;
+
+            case PowerUpType.Speed:
+                // Увеличава продължителността и силата на ефекта
+                StartCoroutine(SpeedBoostRoutine(5f * effectMultiplier, effectMultiplier));
+                break;
+
+            case PowerUpType.Recovery:
+                // Възстановява живот (трябва да имаш метод Heal в PlayerMovement)
+                // Heal(Mathf.RoundToInt(1 * effectMultiplier)); 
+                Debug.Log($"Възстановяване на HP: {Mathf.RoundToInt(1 * effectMultiplier)}");
+                break;
+
+            case PowerUpType.MegaXP:
+                // Дава голямо количество XP (напр. 50 XP * мултипликатор)
+                // ExperienceManager.instance.AddExperience(Mathf.RoundToInt(50 * effectMultiplier));
+                Debug.Log($"Мега XP бонус: {Mathf.RoundToInt(50 * effectMultiplier)}");
+                break;
+
+            case PowerUpType.Shield:
+                int baseHits = 1;
+                int hits = (tier == PowerUpTier.Gold) ? 3 : Mathf.RoundToInt(baseHits * effectMultiplier);
+
+                // Търсим PlayerHealth, където сега е логиката
+                PlayerHealth playerHealth = GetComponent<PlayerHealth>();
+
+                if (playerHealth != null)
+                {
+                    //  ИЗВИКВАМЕ МЕТОДА В PLAYERHEALTH
+                    playerHealth.ActivateShield(hits, tier);
+                }
+                break;
+
+        }
+    }
+
+    // ====================================================================
+    // 5. COROUTINES ЗА ВРЕМЕННИ ЕФЕКТИ
+    // ====================================================================
+
+    IEnumerator RapidFireRoutine(float duration)
+    {
+        // Намаляваме интервала за стрелба (правим го по-бърз)
+        // Bronze: 0.5s -> 0.25s, Silver: 0.5s -> 0.16s, Gold: 0.5s -> 0.125s (примерно)
+        float rapidFireRate = originalFireRate / 4f;
+
+        // Ако вече е активен, рестартираме Coroutine-а, за да обновим продължителността
+        if (fireRate < originalFireRate)
+        {
+            // Ако вече е в режим RapidFire, просто продължаваме
+        }
+        else
+        {
+            fireRate = rapidFireRate; // Активираме Rapid Fire
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        // Връщаме оригиналната скорост на стрелба
+        fireRate = originalFireRate;
+    }
+
+    IEnumerator SpeedBoostRoutine(float duration, float multiplier)
+    {
+        float speedIncrease = 1.5f; // Повишава скоростта с 50%
+
+        // Временно увеличаваме скоростта
+        float newSpeed = originalSpeed * (1f + (speedIncrease * (multiplier / 2f)));
+        speed = newSpeed;
+
+        yield return new WaitForSeconds(duration);
+
+        // Връщаме оригиналната скорост
+        speed = originalSpeed;
     }
 }

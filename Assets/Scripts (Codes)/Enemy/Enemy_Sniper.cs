@@ -4,24 +4,22 @@ using System.Collections;
 public class Enemy_Sniper : EnemyBase
 {
     [Header("Sniper Specifics")]
-    [SerializeField] float sniperShootInterval = 5.0f; 
-    [SerializeField] GameObject fastLaserPrefab;      
+    [SerializeField] float sniperSpeed = 0.5f; // Много бавно движение
+    [SerializeField] float sniperShootInterval = 5.0f; // Бавна стрелба
+    [SerializeField] GameObject fastLaser2DamagePrefab; // Бърз лазер, нанасящ 2 щети
 
     protected override void Start()
     {
         base.Start();
-        StartCoroutine(ShootRoutine(sniperShootInterval, fastLaserPrefab)); 
+
+        // Бавна стрелба с БЪРЗ лазер, нанасящ 2 щети
+        StartCoroutine(ShootRoutine(sniperShootInterval, fastLaser2DamagePrefab));
     }
 
     protected override void Update()
     {
-        
-        transform.Translate(Vector3.down * 0.5f * Time.deltaTime);
+        // Движи се много бавно
+        transform.Translate(Vector3.down * sniperSpeed * Time.deltaTime);
         base.Update();
-    }
-
-    protected IEnumerator ShootRoutine(float interval, GameObject laserPrefab)
-    {
-        yield break; 
     }
 }

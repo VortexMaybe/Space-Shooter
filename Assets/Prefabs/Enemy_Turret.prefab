@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1591570744658654258
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 484449280977013633, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_Name
+      value: Enemy_Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2209687165207982353, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4350761147916422712, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5916246123545828667, guid: d2e4a89c566928045be482d83e08a7fa, type: 3}
+    m_RemovedComponents:
+    - {fileID: 886599652693406923, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+    - {fileID: 6665904474288872321, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 484449280977013633, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 4216733320132998761}
+  m_SourcePrefab: {fileID: 100100000, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+--- !u!1 &1202312825588711347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 484449280977013633, guid: 570ea63c5bbb5f94e86514fb87b2a929, type: 3}
+  m_PrefabInstance: {fileID: 1591570744658654258}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4216733320132998761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202312825588711347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6cf2734f311b5844b90adb4e2a39c87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  audioSource: {fileID: 6094981438226413644, guid: 9c6023ac27b10ee41be4431cc4323a07, type: 3}
+  deathSound: {fileID: 8300000, guid: 81ea8898e3ddee14f84c2e9e14d36b1d, type: 3}
+  customVolume: 5.6
+  maxHealth: 2
+  hitFlickerDuration: 0.1
+  rotationLerpSpeed: 1.5
+  spawnInvulnerabilityTime: 1
+  minExperience: 5
+  maxExperience: 13
+  baseScoreValue: 10
+  floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
+  turretSpeed: 2
+  trackingSpeed: 5
+  turretLaserPrefab: {fileID: 6948047365279509600, guid: f0542c207e9199f4cbea80667f63540b, type: 3}
+  turretShootInterval: 2
+  offsetAngle: 15

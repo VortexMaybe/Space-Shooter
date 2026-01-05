@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; // Запазваме го за Floating Text
+using TMPro;
+using JetBrains.Annotations;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected int baseScoreValue = 10;
     [SerializeField] protected GameObject floatingTextPrefab;
 
+    [Header("XP & Loot Settings")]
+    [SerializeField] int baseXPValue = 5;
+    [SerializeField] float dropChance = 0.2f;
+    [SerializeField] GameObject[] powerupPrefabs;
+
     // [Вътрешни Променливи]
     protected int currentHealth;
     protected Transform playerTransform; // Правим го protected
@@ -36,7 +42,6 @@ public class EnemyBase : MonoBehaviour
 
     // --------------------------------------------------------------------------------
 
-    // ✅ Започваме с 'protected virtual Start()'
     protected virtual void Start()
     {
         currentHealth = maxHealth;
@@ -59,7 +64,7 @@ public class EnemyBase : MonoBehaviour
         // ВАЖНО: Тук НЕ стартираме ShootRoutine или Update, тъй като всеки враг ще го прави по различен начин
     }
 
-    // ✅ Добавяме празен Update() метод, който наследниците ще заместят (override)
+    // Добавяме празен Update() метод, който наследниците ще заместят (override)
     protected virtual void Update()
     {
         // Всички врагове проверяват дали са излезли от екрана
@@ -76,6 +81,27 @@ public class EnemyBase : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnInvulnerabilityTime);
         canBeHit = true;
+    }
+
+    protected IEnumerator ShootRoutine(float interval, GameObject laserPrefab)
+    {
+        // Изчакваме малко, за да не стрелят веднага
+        yield return new WaitForSeconds(interval / 2);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(interval);
+            ShootLaser(laserPrefab);
+        }
+    }
+
+    protected void ShootLaser(GameObject laserPrefab)
+    {
+        if (laserPrefab != null)
+        {
+            // Предполага се, че лазерът се създава с ротацията на кораба
+            Instantiate(laserPrefab, transform.position, transform.rotation);
+        }
     }
 
     public void EnemyDestroyedByPlayerLaser()
@@ -122,7 +148,77 @@ public class EnemyBase : MonoBehaviour
         Destroy(gameObject);
     }
 
-    IEnumerator FlickerOnHit()
+    public void Die()
+    {
+        HandleXPGain();
+        HandlePowerUpDrop();
+        Destroy(gameObject);
+    }
+
+    void HandleXPGain()
+    {
+        if (ExperienceManager.instance != null && LevelManager.instance != null)
+        {
+            int worldLevel = LevelManager.instance.currentWorldLevel;
+
+            float xpMultiplier = 1f + (worldLevel - 1) * 0.10f;
+
+            int finalXP = Mathf.RoundToInt(baseXPValue * xpMultiplier);
+
+            finalXP = Mathf.Max(2, finalXP);
+
+            ExperienceManager.instance.AddExperience(finalXP);
+        }
+    }
+
+    void HandlePowerUpDrop()
+    {
+        if (LevelManager.instance == null || powerupPrefabs.Length == 0) return;
+
+        int pickupsUsed = LevelManager.instance.currentPickupsUsed;
+        int maxPickups = LevelManager.instance.maxPickupsPerPhase;
+
+        if (pickupsUsed < maxPickups && Random.value < dropChance)
+        {
+            GameObject chosenPowerUpPrefab = powerupPrefabs[Random.Range(0, powerupPrefabs.Length)];
+
+            GameObject powerUpInstance = Instantiate(chosenPowerUpPrefab, transform.position, Quaternion.identity);
+
+            PowerUp powerUpComponent = powerUpInstance.GetComponent<PowerUp>();
+
+            if (powerUpComponent != null)
+            {
+                // 2. ОПРЕДЕЛЯНЕ НА КАЧЕСТВОТО (Tier) СПОРЕД ТВОИТЕ ШАНСОВЕ
+
+                float roll = Random.value * 100f; // Случайно число от 0 до 100
+                PowerUpTier chosenTier;
+
+                if (roll <= 5f) // 5% шанс
+                {
+                    chosenTier = PowerUpTier.Gold;
+                }
+                else if (roll <= (5f + 35f)) // 5% + 35% = 40% шанс (за Сребро и Злато)
+                {
+                    chosenTier = PowerUpTier.Silver;
+                }
+                else // Останалите 60% шанс
+                {
+                    chosenTier = PowerUpTier.Bronze;
+                }
+
+                // 3. ЗАДАВАНЕ НА TIER-а И ВИЗУАЛНА АКТУАЛИЗАЦИЯ
+                powerUpComponent.tier = chosenTier;
+
+                // ТУК трябва да добавиш логика, която сменя Sprite-а (на Бронз/Сребро/Злато)
+                // powerUpComponent.SetVisuals(chosenTier); 
+
+                // 4. Увеличаваме брояча
+                LevelManager.instance.currentPickupsUsed++;
+            }
+        }
+    }
+
+    protected IEnumerator FlickerOnHit()
     {
         if (spriteRenderer == null) yield break;
 
