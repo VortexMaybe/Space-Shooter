@@ -3,14 +3,8 @@ using System.Collections; // Трябва за Coroutines (Rapid Fire, Speed Boo
 
 public class PlayerMovement : MonoBehaviour
 {
-    // ====================================================================
-    // 1. SINGLETON (ЗА ДОСТЪП ОТ PowerUp.cs)
-    // ====================================================================
     public static PlayerMovement instance;
 
-    // ====================================================================
-    // 2. ДВИЖЕНИЕ И АТАКА
-    // ====================================================================
     public float speed = 5f;
     [SerializeField] float fireRate = 0.5f;
     float nextFireTime = 0f;
@@ -20,9 +14,6 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip shootSound;
 
-    // ====================================================================
-    // 3. ПРОМЕНЛИВИ ЗА POWER-UPS
-    // ====================================================================
     private float originalSpeed;
     private float originalFireRate;
 
@@ -93,6 +84,8 @@ public class PlayerMovement : MonoBehaviour
             case PowerUpTier.Gold: effectMultiplier = 2.0f; break;
         }
 
+        PlayerHealth playerhealth = GetComponent<PlayerHealth>();
+
         // Прилагаме ефекта
         switch (type)
         {
@@ -107,31 +100,28 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case PowerUpType.Recovery:
-                // Възстановява живот (трябва да имаш метод Heal в PlayerMovement)
-                // Heal(Mathf.RoundToInt(1 * effectMultiplier)); 
+                int healAmount = Mathf.RoundToInt(1 * effectMultiplier);
+                if (playerhealth != null)
+                {
+                    playerhealth.Heal(healAmount);
+                }
                 Debug.Log($"Възстановяване на HP: {Mathf.RoundToInt(1 * effectMultiplier)}");
                 break;
 
             case PowerUpType.MegaXP:
-                // Дава голямо количество XP (напр. 50 XP * мултипликатор)
-                // ExperienceManager.instance.AddExperience(Mathf.RoundToInt(50 * effectMultiplier));
+                int xpAmount = Mathf.RoundToInt(50 * effectMultiplier);
                 Debug.Log($"Мега XP бонус: {Mathf.RoundToInt(50 * effectMultiplier)}");
                 break;
 
             case PowerUpType.Shield:
                 int baseHits = 1;
                 int hits = (tier == PowerUpTier.Gold) ? 3 : Mathf.RoundToInt(baseHits * effectMultiplier);
-
-                // Търсим PlayerHealth, където сега е логиката
-                PlayerHealth playerHealth = GetComponent<PlayerHealth>();
-
-                if (playerHealth != null)
+                if (playerhealth != null)
                 {
-                    //  ИЗВИКВАМЕ МЕТОДА В PLAYERHEALTH
-                    playerHealth.ActivateShield(hits, tier);
+                    playerhealth.ActivateShield(hits, tier);
                 }
+                PlayerHealth playerHealth = GetComponent<PlayerHealth>();
                 break;
-
         }
     }
 

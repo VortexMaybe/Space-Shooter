@@ -110,17 +110,32 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 81ea8898e3ddee14f84c2e9e14d36b1d, type: 3}
   customVolume: 5.6
   maxHealth: 2
-  hitFlickerDuration: 0.1
+  hitFlickerDuration: 0.16
   rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 1
   minExperience: 2
   maxExperience: 5
   baseScoreValue: 10
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
+  baseXPValue: 5
+  dropChance: 1
+  powerupPrefabs:
+  - {fileID: 4283422912967686166, guid: 7331db554f3cc0545a8cd3ccbbd28811, type: 3}
+  - {fileID: 5571058714422570428, guid: 820efcc387a414b439cd6e504652f72a, type: 3}
+  - {fileID: 2952236578939993618, guid: 6e40117e61af80543b314dd958d5b18f, type: 3}
+  - {fileID: 87366457968193188, guid: 820625a56fab1664d8f013386c424415, type: 3}
+  - {fileID: 8358449845491166539, guid: 7782d92796bdc4549b342458f0ed991d, type: 3}
+  - {fileID: 613539842398395391, guid: 659ef338ad4b1704180c629782c4ad66, type: 3}
+  - {fileID: 1919040367245454811, guid: 2137e38f315dcc045b465bfdf767ba92, type: 3}
+  - {fileID: 2119528864880373571, guid: 1ccb8987469cdd646a1d9e4e5f572b23, type: 3}
+  - {fileID: 6416648853214355035, guid: ebb94d7a18b92834889fec9bd89565b4, type: 3}
+  - {fileID: 3661811428797196486, guid: 8ac0c677fd4a0214ab2cb8d3a0df98b9, type: 3}
+  - {fileID: 6892580632978718037, guid: fec614dcbef9de149899d03f5629fe3a, type: 3}
+  - {fileID: 2919791137500106278, guid: b819783371697d844bfe08ec54a870f8, type: 3}
   standardSpeed: 3
   wiggleMagnitude: 0.67
   trackingSpeed: 5
-  standardShootInterval: 2.1
+  standardShootInterval: 1.74
   standardLaserPrefab: {fileID: 4791258693114828447, guid: d22200d7d0d953240b2de2f7860f1c5b, type: 3}
 --- !u!58 &1888959383214028746
 CircleCollider2D:

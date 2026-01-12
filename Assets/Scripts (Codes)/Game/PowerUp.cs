@@ -26,7 +26,15 @@ public class PowerUp : MonoBehaviour
 
     //  Трябва да е публична, за да се зададе от EnemyBase при дроп
     [SerializeField] public PowerUpTier tier = PowerUpTier.Bronze;
+    private SpriteRenderer sr;
+    public Sprite bronzeSprite;
+    public Sprite silverSprite;
+    public Sprite goldSprite;
 
+    private void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
     void Update()
     {
         transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
@@ -36,8 +44,22 @@ public class PowerUp : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void SetVisuals(PowerUpTier tier)
+    {
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+
+        switch (tier)
+        {
+            case PowerUpTier.Bronze: sr.sprite = bronzeSprite; break;
+            case PowerUpTier.Silver: sr.sprite = silverSprite; break;
+            case PowerUpTier.Gold: sr.sprite = goldSprite; break;
+        }
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Power-Up се докосна до: " + other.name);
+
         if (other.CompareTag("Player"))
         {
             if (PlayerMovement.instance != null)

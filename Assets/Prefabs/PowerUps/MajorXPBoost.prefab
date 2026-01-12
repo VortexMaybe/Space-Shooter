@@ -81,7 +81,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_Sprite: {fileID: -7930127975755352345, guid: b9f0428a81e1b8f4bbd64c1d39055b2d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -108,6 +108,9 @@ MonoBehaviour:
   moveSpeed: 3
   type: 5
   tier: 1
+  bronzeSprite: {fileID: 8710450031473673720, guid: 566186e9b004a3548a92c1a074b1fe5a, type: 3}
+  silverSprite: {fileID: -7930127975755352345, guid: b9f0428a81e1b8f4bbd64c1d39055b2d, type: 3}
+  goldSprite: {fileID: 4401285208069525587, guid: ef6a991ddf60e7449adc94a685020bc6, type: 3}
 --- !u!50 &60106171176762320
 Rigidbody2D:
   serializedVersion: 5

@@ -28,7 +28,7 @@ public class EnemyBase : MonoBehaviour
 
     [Header("XP & Loot Settings")]
     [SerializeField] int baseXPValue = 5;
-    [SerializeField] float dropChance = 0.2f;
+    [SerializeField] protected float dropChance = 0.2f;
     [SerializeField] GameObject[] powerupPrefabs;
 
     // [Вътрешни Променливи]
@@ -40,7 +40,6 @@ public class EnemyBase : MonoBehaviour
     // Граници (Могат да се ползват от наследниците)
     protected float lowerBoundY;
 
-    // --------------------------------------------------------------------------------
 
     protected virtual void Start()
     {
@@ -116,6 +115,15 @@ public class EnemyBase : MonoBehaviour
             return;
         }
 
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(FlickerOnHit());
+        }
+
         // Logic за Score и XP (запазена)
         if (GameManager.instance != null)
         {
@@ -145,7 +153,7 @@ public class EnemyBase : MonoBehaviour
             AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
         }
 
-        Destroy(gameObject);
+        Die();
     }
 
     public void Die()
@@ -173,48 +181,53 @@ public class EnemyBase : MonoBehaviour
 
     void HandlePowerUpDrop()
     {
-        if (LevelManager.instance == null || powerupPrefabs.Length == 0) return;
+        Debug.Log("--- Проверка за Power-Up Drop ---"); // 1. Дали методът изобщо се вика?
+
+        if (LevelManager.instance == null)
+        {
+            Debug.LogError("ГРЕШКА: LevelManager липсва в сцената!");
+            return;
+        }
+
+        if (powerupPrefabs == null || powerupPrefabs.Length == 0)
+        {
+            Debug.LogWarning("ПРЕДУПРЕЖДЕНИЕ: Списъкът powerupPrefabs е ПРАЗЕН в Inspector-а!");
+            return;
+        }
 
         int pickupsUsed = LevelManager.instance.currentPickupsUsed;
         int maxPickups = LevelManager.instance.maxPickupsPerPhase;
 
-        if (pickupsUsed < maxPickups && Random.value < dropChance)
+        if (pickupsUsed >= maxPickups)
         {
-            GameObject chosenPowerUpPrefab = powerupPrefabs[Random.Range(0, powerupPrefabs.Length)];
+            Debug.Log("Power-Up НЕ падна: Лимитът за фазата е достигнат (" + pickupsUsed + "/" + maxPickups + ")");
+            return;
+        }
 
-            GameObject powerUpInstance = Instantiate(chosenPowerUpPrefab, transform.position, Quaternion.identity);
+        float rollChance = Random.value;
+        if (rollChance > dropChance)
+        {
+            Debug.Log("Power-Up НЕ падна: Късметът не проработи. Шанс: " + dropChance + ", Твоето число: " + rollChance);
+            return;
+        }
 
-            PowerUp powerUpComponent = powerUpInstance.GetComponent<PowerUp>();
+        // Ако стигне до тук, значи трябва да се спаунне!
+        Debug.Log("УСПЕХ: Спаунваме Power-Up!");
 
-            if (powerUpComponent != null)
-            {
-                // 2. ОПРЕДЕЛЯНЕ НА КАЧЕСТВОТО (Tier) СПОРЕД ТВОИТЕ ШАНСОВЕ
+        GameObject chosenPrefab = powerupPrefabs[Random.Range(0, powerupPrefabs.Length)];
+        GameObject powerUpInstance = Instantiate(chosenPrefab, transform.position, Quaternion.identity);
 
-                float roll = Random.value * 100f; // Случайно число от 0 до 100
-                PowerUpTier chosenTier;
+        PowerUp pu = powerUpInstance.GetComponent<PowerUp>();
+        if (pu != null)
+        {
+            // Изчисляваме Tier
+            float roll = Random.value * 100f;
+            if (roll <= 5f) pu.tier = PowerUpTier.Gold;
+            else if (roll <= 40f) pu.tier = PowerUpTier.Silver;
+            else pu.tier = PowerUpTier.Bronze;
 
-                if (roll <= 5f) // 5% шанс
-                {
-                    chosenTier = PowerUpTier.Gold;
-                }
-                else if (roll <= (5f + 35f)) // 5% + 35% = 40% шанс (за Сребро и Злато)
-                {
-                    chosenTier = PowerUpTier.Silver;
-                }
-                else // Останалите 60% шанс
-                {
-                    chosenTier = PowerUpTier.Bronze;
-                }
-
-                // 3. ЗАДАВАНЕ НА TIER-а И ВИЗУАЛНА АКТУАЛИЗАЦИЯ
-                powerUpComponent.tier = chosenTier;
-
-                // ТУК трябва да добавиш логика, която сменя Sprite-а (на Бронз/Сребро/Злато)
-                // powerUpComponent.SetVisuals(chosenTier); 
-
-                // 4. Увеличаваме брояча
-                LevelManager.instance.currentPickupsUsed++;
-            }
+            pu.SetVisuals(pu.tier);
+            LevelManager.instance.currentPickupsUsed++;
         }
     }
 

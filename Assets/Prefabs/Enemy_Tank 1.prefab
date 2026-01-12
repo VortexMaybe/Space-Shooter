@@ -94,6 +94,12 @@ MonoBehaviour:
   maxExperience: 10
   baseScoreValue: 10
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
+  baseXPValue: 5
+  dropChance: 0.2
+  powerupPrefabs:
+  - {fileID: 4283422912967686166, guid: 7331db554f3cc0545a8cd3ccbbd28811, type: 3}
+  - {fileID: 5571058714422570428, guid: 820efcc387a414b439cd6e504652f72a, type: 3}
+  - {fileID: 2952236578939993618, guid: 6e40117e61af80543b314dd958d5b18f, type: 3}
   tankSpeed: 1.8
   tankShootInterval: 2.4
   heavyBulletPrefab: {fileID: 5472491308402692042, guid: 9465ce0bc2628c2479efa0e9c5f87d11, type: 3}
