@@ -24,8 +24,14 @@ public class PowerUp : MonoBehaviour
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] public PowerUpType type; // Тип на ефекта
 
-    //  Трябва да е публична, за да се зададе от EnemyBase при дроп
+    [Header("Pickup Effects")]
+    [SerializeField] private AudioClip bronzeSound;
+    [SerializeField] private AudioClip silverSound;
+    [SerializeField] private AudioClip goldSound;
     [SerializeField] public PowerUpTier tier = PowerUpTier.Bronze;
+
+    [Header("Visual Effects")]
+    public GameObject pickupEffectPrefab;
     private SpriteRenderer sr;
     public Sprite bronzeSprite;
     public Sprite silverSprite;
@@ -66,6 +72,32 @@ public class PowerUp : MonoBehaviour
             {
                 // Изпращаме ТИПА И КАЧЕСТВОТО към PlayerController-а
                 PlayerMovement.instance.ActivatePowerUp(type, tier);
+            }
+
+            AudioClip soundToPlay = null;
+
+            switch (tier)
+            {
+                case PowerUpTier.Bronze: soundToPlay = bronzeSound; break;
+                case PowerUpTier.Silver: soundToPlay = silverSound; break;
+                case PowerUpTier.Gold: soundToPlay = goldSound; break;
+            }
+
+            if (soundToPlay != null)
+            {
+                AudioSource.PlayClipAtPoint(soundToPlay, Camera.main.transform.position, 1f);
+            }
+
+            if (pickupEffectPrefab != null)
+            {
+                GameObject effect = Instantiate(pickupEffectPrefab, transform.position, Quaternion.identity);
+
+                Destroy(effect, 1f);
+
+                var main = effect.GetComponent<ParticleSystem>().main;
+                if (tier == PowerUpTier.Gold) main.startColor = Color.yellow;
+                else if (tier == PowerUpTier.Silver) main.startColor = Color.white;
+                else main.startColor = new Color(0.8f, 0.5f, 0.2f);
             }
 
             Destroy(gameObject);

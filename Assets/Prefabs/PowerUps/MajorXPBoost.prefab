@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,7 +107,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PowerUp
   moveSpeed: 3
   type: 5
+  bronzeSound: {fileID: 8300000, guid: 4f9a0f0a8c6e17040879f3698a65c20e, type: 3}
+  silverSound: {fileID: 8300000, guid: c9f9ff80ab07cb2479deb205373ad753, type: 3}
+  goldSound: {fileID: 8300000, guid: 1a3c0c68d5e47a14697098b9a8935c4d, type: 3}
   tier: 1
+  pickupEffectPrefab: {fileID: 8228095407246721242, guid: d184997d427c5e648a009850745ec897, type: 3}
   bronzeSprite: {fileID: 8710450031473673720, guid: 566186e9b004a3548a92c1a074b1fe5a, type: 3}
   silverSprite: {fileID: -7930127975755352345, guid: b9f0428a81e1b8f4bbd64c1d39055b2d, type: 3}
   goldSprite: {fileID: 4401285208069525587, guid: ef6a991ddf60e7449adc94a685020bc6, type: 3}
@@ -168,7 +172,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

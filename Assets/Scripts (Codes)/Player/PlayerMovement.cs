@@ -14,8 +14,9 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip shootSound;
 
+    public GameObject floatingTextPrefab;
     private float originalSpeed;
-    private float originalFireRate;
+    private float currentFireRate = 0.5f;
 
     // Инициализация на Singleton и оригиналните стойности
     void Awake()
@@ -31,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         originalSpeed = speed;
-        originalFireRate = fireRate;
+        currentFireRate = fireRate;
     }
 
     void Update()
@@ -64,6 +65,39 @@ public class PlayerMovement : MonoBehaviour
                 audioSource.PlayOneShot(shootSound);
             }
         }
+    }
+
+    void ShowFloatingText(string message, Color textColor)
+    {
+        // Проверяваме дали префабът за текст е закачен в Инспектора
+        if (floatingTextPrefab != null)
+        {
+            // Създаваме текста на позицията на играча
+            GameObject ft = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+
+            // Вземаме скрипта на самия текст (предполагам се казва FloatingText)
+            FloatingText ftScript = ft.GetComponent<FloatingText>();
+
+            if (ftScript != null)
+            {
+                // Извикваме неговия метод за инициализация (с твоите параметри)
+                ftScript.Initialize(message, textColor);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Липсва floatingTextPrefab в Player скрипта!");
+        }
+    }
+
+    void ApplyFireRateUpgrade(PowerUpTier tier)
+    {
+        float reduction = 0.05f; // Бронз: -5% време между изстрелите
+        if (tier == PowerUpTier.Silver) reduction = 0.12f;
+        if (tier == PowerUpTier.Gold) reduction = 0.25f;
+
+        currentFireRate -= currentFireRate * reduction;
+        currentFireRate = Mathf.Max(currentFireRate, 0.1f); // Лимит, за да не стане прекалено бързо
     }
 
     // ====================================================================
@@ -109,8 +143,24 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case PowerUpType.MegaXP:
-                int xpAmount = Mathf.RoundToInt(50 * effectMultiplier);
-                Debug.Log($"Мега XP бонус: {Mathf.RoundToInt(50 * effectMultiplier)}");
+                int xpAmount = 0;
+                if (tier == PowerUpTier.Bronze) xpAmount = Random.Range(20, 21); // Твърдо 20
+                else if (tier == PowerUpTier.Silver) xpAmount = Random.Range(50, 71);
+                else if (tier == PowerUpTier.Gold)
+                {
+                    // 1. Светкавица на екрана (можеш да ползваш бял Image в UI и да го пуснеш за кратко)
+                    // 2. Унищожаване на всички врагове
+                    EnemyBase[] allEnemies = FindObjectsOfType<EnemyBase>();
+                    foreach (EnemyBase enemy in allEnemies)
+                    {
+                        enemy.Die(); // Това ще ти даде техния score автоматично
+                    }
+                    xpAmount = 100;
+                }
+
+                // Показване на Floating Text (различен цвят)
+                ShowFloatingText($"+{xpAmount} XP", Color.yellow);
+                ExperienceManager.instance.AddExperience(xpAmount);
                 break;
 
             case PowerUpType.Shield:
@@ -133,10 +183,10 @@ public class PlayerMovement : MonoBehaviour
     {
         // Намаляваме интервала за стрелба (правим го по-бърз)
         // Bronze: 0.5s -> 0.25s, Silver: 0.5s -> 0.16s, Gold: 0.5s -> 0.125s (примерно)
-        float rapidFireRate = originalFireRate / 4f;
+        float rapidFireRate = currentFireRate / 4f;
 
         // Ако вече е активен, рестартираме Coroutine-а, за да обновим продължителността
-        if (fireRate < originalFireRate)
+        if (fireRate < currentFireRate)
         {
             // Ако вече е в режим RapidFire, просто продължаваме
         }
@@ -148,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         // Връщаме оригиналната скорост на стрелба
-        fireRate = originalFireRate;
+        fireRate = currentFireRate;
     }
 
     IEnumerator SpeedBoostRoutine(float duration, float multiplier)

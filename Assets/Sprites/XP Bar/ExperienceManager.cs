@@ -11,11 +11,17 @@ public class ExperienceManager : MonoBehaviour
     public delegate void LevelUpAction();
     public static event LevelUpAction OnLevelUp;
 
-    [Header("Experience")]
-    [SerializeField] AnimationCurve experienceCurve;
+    [Header("Experience Settings")]
+    public int currentLevel = 1;
+    public int totalExperience = 0;
 
-    public int currentLevel, totalExperience;
-    int previousLevelsExperience, nextLevelsExperience;
+    [Tooltip("Колко XP ни трябва за 1-во ниво")]
+    public int baseLevelXP = 30;
+    [Tooltip("С колко XP повече да иска всяко следващо ниво (1.2 = 20% ; 1.3 = 30%)")]
+    public float levelMultiplier = 1.2f;
+
+    private int nextLevelsExperience;
+    private int previousLevelsExperience;
 
     [Header("Audio")]
     [SerializeField] private AudioClip levelupSound;
@@ -25,14 +31,14 @@ public class ExperienceManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI experienceText;
     [SerializeField] Image experienceFill;
 
+    void Awake()
+    {
+        if (instance == null) instance = this;
+    }
     void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        UpdateLevel();
+        UpdateLevelThresholds();
+        UpdateInterface();
     }
 
     public void AddExperience(int amount)
@@ -41,17 +47,12 @@ public class ExperienceManager : MonoBehaviour
         CheckForLevelUp();
         UpdateInterface();
     }
-
-    public int GetCurrentLevel()
-    {
-        return currentLevel;
-    }
     void CheckForLevelUp()
     {
         while (totalExperience >= nextLevelsExperience)
         {
             currentLevel++;
-            UpdateLevel();
+            UpdateLevelThresholds();
 
             PlayLevelUpSound();
             if (OnLevelUp != null)
@@ -61,11 +62,19 @@ public class ExperienceManager : MonoBehaviour
         }
     }
 
-    void UpdateLevel()
+    void UpdateLevelThresholds()
     {
-        previousLevelsExperience = (int)experienceCurve.Evaluate(currentLevel);
-        nextLevelsExperience = (int)experienceCurve.Evaluate(currentLevel + 1);
-        UpdateInterface();
+        if (currentLevel <= 1)
+        {
+            previousLevelsExperience = 0;
+            nextLevelsExperience = baseLevelXP;
+        }
+        else
+        {
+            previousLevelsExperience = (int)(baseLevelXP * Mathf.Pow(levelMultiplier, currentLevel - 1));
+
+            nextLevelsExperience = (int)(baseLevelXP * Mathf.Pow(levelMultiplier, currentLevel));
+        }
     }
 
     private void PlayLevelUpSound()
@@ -81,8 +90,14 @@ public class ExperienceManager : MonoBehaviour
         int start = totalExperience - previousLevelsExperience;
         int end = nextLevelsExperience - previousLevelsExperience;
 
+        if (start < 0) start = 0;
+
         levelText.text = currentLevel.ToString();
-        experienceText.text = start + " exp / " + end + " exp";
+        experienceText.text = start + " xp / " + end + " xp ";
         experienceFill.fillAmount = (float)start / (float)end;
+    }
+    public int GetCurrentLevel()
+    {
+        return currentLevel;
     }
 }

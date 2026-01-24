@@ -11,6 +11,9 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     [SerializeField] float customVolume = 5.6f;
 
+    [Header("Visual Effects")]
+    [SerializeField] protected GameObject deathEffectPrefab; // Тук ще сложиш твоята експлозия
+
     [Header("Health")]
     [SerializeField] protected int maxHealth = 2; // Използваме 'protected' за достъп от наследниците
     [SerializeField] private float hitFlickerDuration = 0.1f;
@@ -115,68 +118,44 @@ public class EnemyBase : MonoBehaviour
             return;
         }
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-        else
-        {
-            StartCoroutine(FlickerOnHit());
-        }
+        // --- ТОЧКАТА НА СМЪРТТА ---
 
-        // Logic за Score и XP (запазена)
-        if (GameManager.instance != null)
+        // 1. Изчисляваме XP веднъж и го показваме на екрана
+        int experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
+
+        if (ExperienceManager.instance != null)
         {
-            GameManager.instance.AddScore(baseScoreValue);
+            ExperienceManager.instance.AddExperience(experienceGained);
         }
 
-        ExperienceManager expManager = FindAnyObjectByType<ExperienceManager>();
-        if (expManager != null)
+        // 2. Показваме текста (Floating Text)
+        if (floatingTextPrefab != null)
         {
-            int experienceGained = UnityEngine.Random.Range(minExperience, maxExperience);
-            expManager.AddExperience(experienceGained);
-
-            if (floatingTextPrefab != null)
-            {
-                GameObject ft = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
-                FloatingText ftScript = ft.GetComponent<FloatingText>();
-
-                if (ftScript != null)
-                {
-                    ftScript.Initialize(experienceGained, Color.cyan);
-                }
-            }
+            GameObject ft = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity);
+            FloatingText ftScript = ft.GetComponent<FloatingText>();
+            if (ftScript != null) ftScript.Initialize(experienceGained, Color.cyan);
         }
 
-        if (deathSound != null)
+        // 3. Score и Звук
+        if (GameManager.instance != null) GameManager.instance.AddScore(baseScoreValue);
+        if (deathSound != null) AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
+
+        if (deathEffectPrefab != null)
         {
-            AudioSource.PlayClipAtPoint(deathSound, transform.position, customVolume);
+            GameObject effect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+            Destroy(effect, 2f);
         }
 
-        Die();
-    }
-
-    public void Die()
-    {
-        HandleXPGain();
+        // 4. Пускаме Loot и унищожаваме врага
         HandlePowerUpDrop();
         Destroy(gameObject);
     }
 
-    void HandleXPGain()
+
+    public void Die()
     {
-        if (ExperienceManager.instance != null && LevelManager.instance != null)
-        {
-            int worldLevel = LevelManager.instance.currentWorldLevel;
-
-            float xpMultiplier = 1f + (worldLevel - 1) * 0.10f;
-
-            int finalXP = Mathf.RoundToInt(baseXPValue * xpMultiplier);
-
-            finalXP = Mathf.Max(2, finalXP);
-
-            ExperienceManager.instance.AddExperience(finalXP);
-        }
+        HandlePowerUpDrop();
+        Destroy(gameObject);
     }
 
     void HandlePowerUpDrop()

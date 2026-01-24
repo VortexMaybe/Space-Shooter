@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3388145086847187231}
   - component: {fileID: 6697597601625007630}
+  - component: {fileID: 1249622988139647803}
   - component: {fileID: 161856565324795113}
   - component: {fileID: 119625301393085758}
-  - component: {fileID: 1249622988139647803}
   m_Layer: 0
   m_Name: Overcharge
   m_TagString: Untagged
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -93,6 +93,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1249622988139647803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919791137500106278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e527f7d219786145baae59eb6bb2f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUp
+  moveSpeed: 3
+  type: 2
+  bronzeSound: {fileID: 8300000, guid: 4f9a0f0a8c6e17040879f3698a65c20e, type: 3}
+  silverSound: {fileID: 8300000, guid: c9f9ff80ab07cb2479deb205373ad753, type: 3}
+  goldSound: {fileID: 8300000, guid: 1a3c0c68d5e47a14697098b9a8935c4d, type: 3}
+  tier: 2
+  pickupEffectPrefab: {fileID: 8228095407246721242, guid: d184997d427c5e648a009850745ec897, type: 3}
+  bronzeSprite: {fileID: 1396934403912256120, guid: 6edfb640075524d4a9d1de3555141edd, type: 3}
+  silverSprite: {fileID: -8156014251229692006, guid: dd5448378aed944498eef143008d9663, type: 3}
+  goldSprite: {fileID: -8690911056111147695, guid: 1707e6659f317884ea750a2d862386e0, type: 3}
 --- !u!58 &161856565324795113
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -123,7 +145,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -156,21 +178,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1249622988139647803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2919791137500106278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e527f7d219786145baae59eb6bb2f78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PowerUp
-  moveSpeed: 3
-  type: 2
-  tier: 1
-  bronzeSprite: {fileID: 1396934403912256120, guid: 6edfb640075524d4a9d1de3555141edd, type: 3}
-  silverSprite: {fileID: -8156014251229692006, guid: dd5448378aed944498eef143008d9663, type: 3}
-  goldSprite: {fileID: -8690911056111147695, guid: 1707e6659f317884ea750a2d862386e0, type: 3}

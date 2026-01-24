@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     public PlayerLifesUI lifesUI;
     public AudioSource audioSource;
     public AudioClip damageSound;
+    public AudioClip healSound;
     public float gameOverlayDelay = 3f;
 
     [Header("Invulnerability VFX")]
@@ -138,13 +139,17 @@ public class PlayerHealth : MonoBehaviour
     public void Heal(int amount)
     {
         playerLifes += amount;
-        // Гарантираме, че животът не надвишава максималното (ако имаш maxLifes)
-        // Засега предполагаме, че не можеш да имаш повече от 3 живота
+
         playerLifes = Mathf.Min(playerLifes, 3); // Може да промениш 3, ако имаш maxLifes
 
         if (lifesUI != null)
         {
             lifesUI.UpdateLifes(playerLifes);
+        }
+
+        if (healSound != null)
+        {
+            AudioSource.PlayClipAtPoint(healSound, Camera.main.transform.position, 1f);
         }
 
         Debug.Log($"Животът е възстановен с {amount}. Текущ живот: {playerLifes}");

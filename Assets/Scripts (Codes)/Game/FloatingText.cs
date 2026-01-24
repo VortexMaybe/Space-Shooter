@@ -1,11 +1,12 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class FloatingText : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private float duration = 0.8f;
-     
+
     private TextMeshPro textMesh;
     private float timer;
 
@@ -15,7 +16,7 @@ public class FloatingText : MonoBehaviour
 
         if (textMesh == null)
         {
-            Debug.LogError("FloatingText.cs не намери TextMeshPro компонент на същия обект!");
+            Debug.LogError("FloatingText.cs пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ TextMeshPro пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!");
         }
     }
 
@@ -28,7 +29,7 @@ public class FloatingText : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Не може да се инициализира Floating Text, TextMeshPro е null.");
+            Debug.LogError("пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Floating Text, TextMeshPro пїЅ null.");
         }
     }
 
@@ -49,5 +50,10 @@ public class FloatingText : MonoBehaviour
             newColor.a = alpha;
             textMesh.color = newColor;
         }
+    }
+
+    internal void Initialize(string message, Color textColor)
+    {
+        throw new NotImplementedException();
     }
 }

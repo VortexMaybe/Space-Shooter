@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6677199352927833199}
   - component: {fileID: 3559554849345635716}
+  - component: {fileID: 3161325610004548831}
   - component: {fileID: 4361885251986746444}
   - component: {fileID: 4785800673991279031}
-  - component: {fileID: 3161325610004548831}
   m_Layer: 0
   m_Name: MinorXPBoost
   m_TagString: Untagged
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -93,6 +93,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3161325610004548831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919040367245454811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e527f7d219786145baae59eb6bb2f78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PowerUp
+  moveSpeed: 3
+  type: 5
+  bronzeSound: {fileID: 8300000, guid: 4f9a0f0a8c6e17040879f3698a65c20e, type: 3}
+  silverSound: {fileID: 8300000, guid: c9f9ff80ab07cb2479deb205373ad753, type: 3}
+  goldSound: {fileID: 8300000, guid: 1a3c0c68d5e47a14697098b9a8935c4d, type: 3}
+  tier: 0
+  pickupEffectPrefab: {fileID: 8228095407246721242, guid: d184997d427c5e648a009850745ec897, type: 3}
+  bronzeSprite: {fileID: -8255021118984315550, guid: 9e53081e6dffb1146aa232f869b56167, type: 3}
+  silverSprite: {fileID: -6653175888289530641, guid: f7c13bee6e9498544bf82bee1d58c4d1, type: 3}
+  goldSprite: {fileID: -7001652698887247641, guid: 7686bb4654d79b241a2c9d28734aca5f, type: 3}
 --- !u!50 &4361885251986746444
 Rigidbody2D:
   serializedVersion: 5
@@ -150,27 +172,9 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.155
---- !u!114 &3161325610004548831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919040367245454811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e527f7d219786145baae59eb6bb2f78, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PowerUp
-  moveSpeed: 3
-  type: 5
-  tier: 0
-  bronzeSprite: {fileID: -8255021118984315550, guid: 9e53081e6dffb1146aa232f869b56167, type: 3}
-  silverSprite: {fileID: -6653175888289530641, guid: f7c13bee6e9498544bf82bee1d58c4d1, type: 3}
-  goldSprite: {fileID: -7001652698887247641, guid: 7686bb4654d79b241a2c9d28734aca5f, type: 3}
