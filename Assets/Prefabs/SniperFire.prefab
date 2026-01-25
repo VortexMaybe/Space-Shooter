@@ -128,10 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda1390b39112d6478c11de28c6a4d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLaser
-  speed: 5
+  speed: 7
   lifeTime: 3
   maxAngleDeviation: 45
-  damageToPlayer: 1
+  damageToPlayer: 2
 --- !u!50 &-8941275239390116992
 Rigidbody2D:
   serializedVersion: 5

@@ -107,11 +107,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PowerUp
   moveSpeed: 3
   type: 2
+  tier: 1
   bronzeSound: {fileID: 8300000, guid: 4f9a0f0a8c6e17040879f3698a65c20e, type: 3}
   silverSound: {fileID: 8300000, guid: c9f9ff80ab07cb2479deb205373ad753, type: 3}
   goldSound: {fileID: 8300000, guid: 1a3c0c68d5e47a14697098b9a8935c4d, type: 3}
-  tier: 1
-  pickupEffectPrefab: {fileID: 8228095407246721242, guid: d184997d427c5e648a009850745ec897, type: 3}
+  bronzePickupEffect: {fileID: 394436908293790422, guid: e63d81a0fadbde0499cbff03c467ac74, type: 3}
+  silverPickupEffect: {fileID: 9013272063268853097, guid: 9e1f8fb89d0c4e740bc0e57f1c52823a, type: 3}
+  goldPickupEffect: {fileID: 2672044404030467393, guid: d652e9408a1646a4280b499e66032c8a, type: 3}
   bronzeSprite: {fileID: 1396934403912256120, guid: 6edfb640075524d4a9d1de3555141edd, type: 3}
   silverSprite: {fileID: -8156014251229692006, guid: dd5448378aed944498eef143008d9663, type: 3}
   goldSprite: {fileID: -8690911056111147695, guid: 1707e6659f317884ea750a2d862386e0, type: 3}

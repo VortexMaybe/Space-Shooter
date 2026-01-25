@@ -148,14 +148,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95edc7fc7978a5140babed7c68c94e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  initialSpawnRate: 2.6
+  initialSpawnRate: 3
   defaultEnemyPrefab: {fileID: 6228886774938127292, guid: 7be3f8ec5a71218479f5c9269e74d40a, type: 3}
   tankEnemyPrefab: {fileID: 2595639843131118278, guid: ce981ecd4c2c87b44a98b1bc1c61c8b9, type: 3}
   sniperEnemyPrefab: {fileID: 5327446239144092495, guid: 4af6a010942e77c4caf74b4df62f6d8f, type: 3}
   fastEnemyPrefab: {fileID: 5783094699698091238, guid: f4830cac6154ab54f8fa14412a8091cc, type: 3}
   turretEnemyPrefab: {fileID: 7293336235583469014, guid: b1a3d4ad2f563a94a88ed508315a98d3, type: 3}
-  minDistanceX: 1.6
-  maxSpecialEnemyChance: 0.589
+  minDistanceX: 1.5
+  maxSpecialEnemyChance: 0.766
 --- !u!4 &4176114
 Transform:
   m_ObjectHideFlags: 0
@@ -3590,8 +3590,41 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8505720751540693915, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8505720751540693915, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: m_FlipY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8505720751540693915, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8505720751540693915, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8505720751540693915, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014695131070762439, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: baseFireRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014695131070762439, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: floatingTextPrefab
+      value: 
+      objectReference: {fileID: 1812439401}
+    - target: {fileID: 9014695131070762439, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
+      propertyPath: overchargeEffectPrefab
+      value: 
+      objectReference: {fileID: 3018527058205057620, guid: 15e34c942b1c91748a4ef40e1dcb5549, type: 3}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8352875136737246675, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2cfef2bf9b9eb954295a880dff865a9c, type: 3}
