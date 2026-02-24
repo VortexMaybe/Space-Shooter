@@ -114,9 +114,9 @@ MonoBehaviour:
   hitFlickerDuration: 0.23
   rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 1
-  minExperience: 2
-  maxExperience: 10
-  baseScoreValue: 10
+  minExperience: 9
+  maxExperience: 20
+  baseScoreValue: 15
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
   baseXPValue: 5
   dropChance: 0.2

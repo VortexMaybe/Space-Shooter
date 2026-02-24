@@ -10,13 +10,14 @@ public class LevelManager : MonoBehaviour
     [Header("Настройки на Света (World Progression)")]
     public int currentWorldLevel = 1; // Текущо ниво на трудност
     [SerializeField] private int bossLevelIndex = 10; // XP ниво, при което започва Бос битка
-    [SerializeField] private int xpLevelsPerWorldPhase = 3; // Колко XP нива трябват за увеличаване на World Level
+    [SerializeField] private int xpLevelsPerWorldPhase = 2; // Колко XP нива трябват за увеличаване на World Level
 
     [Header("Настройки за Power-Ups (Pickups)")]
-    [SerializeField] public int maxPickupsPerPhase = 2;
+    [SerializeField] public int maxPickupsPerPhase = 5;
     public int currentPickupsUsed = 0; // Брой използвани Power-Ups в текущата фаза
 
     private int playerXPLevelAtStartOfPhase; // XP нивото на играча, когато е започнала текущата фаза
+
 
 
     void Awake()

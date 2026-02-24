@@ -1316,7 +1316,7 @@ MonoBehaviour:
   currentWorldLevel: 1
   bossLevelIndex: 10
   xpLevelsPerWorldPhase: 2
-  maxPickupsPerPhase: 3
+  maxPickupsPerPhase: 5
   currentPickupsUsed: 0
 --- !u!1 &614303619
 GameObject:
