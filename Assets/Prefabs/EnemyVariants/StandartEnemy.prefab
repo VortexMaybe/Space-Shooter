@@ -114,8 +114,13 @@ MonoBehaviour:
   hitFlickerDuration: 0.3
   rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 1
+<<<<<<< HEAD
   minExperience: 6
   maxExperience: 15
+=======
+  minExperience: 7
+  maxExperience: 12
+>>>>>>> baef184c887dd9a8c0e5b2f53a7881f960a96fde
   baseScoreValue: 10
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
   shootSound: {fileID: 8300000, guid: 7b7fbbf1cc0432e4e84e685597bdd513, type: 3}

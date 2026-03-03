@@ -1341,7 +1341,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   currentWorldLevel: 1
   bossLevelIndex: 10
+<<<<<<< HEAD
   xpLevelsPerWorldPhase: 1
+=======
+  xpLevelsPerWorldPhase: 2
+>>>>>>> baef184c887dd9a8c0e5b2f53a7881f960a96fde
   maxPickupsPerPhase: 5
   currentPickupsUsed: 0
 --- !u!1 &614303619
