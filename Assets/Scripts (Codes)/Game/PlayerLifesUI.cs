@@ -10,7 +10,6 @@ public class PlayerLifesUI : MonoBehaviour
 
     [Header("UI Shake Settings")]
     public float shakeDuration = 0.2f;
-
     public float shakeMagnitude = 5f;
 
     void Awake()
@@ -22,47 +21,48 @@ public class PlayerLifesUI : MonoBehaviour
     {
         if (lifeIcons == null || lifeIcons.Length == 0) return;
 
-        int newlyLostLifeIndex = -1;
+        bool lostLife = false;
 
         for (int i = 0; i < lifeIcons.Length; i++)
         {
             if (i < currentLifes)
             {
+                // Имаме живот - показваме иконата цяла
                 lifeIcons[i].sprite = fullLifeSprite;
-                lifeIcons[i].transform.Find("Line1")?.gameObject.SetActive(false);
-                lifeIcons[i].transform.Find("Line2")?.gameObject.SetActive(false);
+                SetLinesActive(lifeIcons[i].transform, false);
             }
             else
             {
-                if (i == currentLifes)
+                // Нямаме живот - ако иконата е била активна, я "задраскваме"
+                GameObject line1 = lifeIcons[i].transform.Find("Line1")?.gameObject;
+                if (line1 != null && !line1.activeSelf)
                 {
-                    newlyLostLifeIndex = i;
+                    StartCoroutine(AnimateLifeLoss(lifeIcons[i].transform));
+                    lostLife = true;
                 }
             }
         }
-        if (newlyLostLifeIndex != -1)
-        {
-            ShakeUI();
-            StartCoroutine(AnimateLifeLoss(lifeIcons[newlyLostLifeIndex].transform));
-        }
+
+        if (lostLife) ShakeUI();
     }
+
+    private void SetLinesActive(Transform icon, bool state)
+    {
+        icon.Find("Line1")?.gameObject.SetActive(state);
+        icon.Find("Line2")?.gameObject.SetActive(state);
+    }
+
     IEnumerator AnimateLifeLoss(Transform lifeIconTransform)
     {
         GameObject line1 = lifeIconTransform.Find("Line1")?.gameObject;
         GameObject line2 = lifeIconTransform.Find("Line2")?.gameObject;
 
-        if (line1 == null || line2 == null) yield break;
-
-        line1.SetActive(true);
-
-        yield return new WaitForSeconds(0.1f);
-
-        line2.SetActive(true);
+        if (line1 != null) { line1.SetActive(true); yield return new WaitForSeconds(0.1f); }
+        if (line2 != null) { line2.SetActive(true); }
     }
 
     public void ShakeUI()
     {
-        StopAllCoroutines();
         StartCoroutine(ShakeRoutine());
     }
 
@@ -70,18 +70,12 @@ public class PlayerLifesUI : MonoBehaviour
     {
         Vector3 originalPos = rectTransform.localPosition;
         float elapsed = 0f;
-
         while (elapsed < shakeDuration)
         {
-            float x = Random.Range(-1f, 1f) * shakeMagnitude;
-            float y = Random.Range(-1f, 1f) * shakeMagnitude;
-
-            rectTransform.localPosition = originalPos + new Vector3(x, y, 0);
-
+            rectTransform.localPosition = originalPos + (Vector3)Random.insideUnitCircle * shakeMagnitude;
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         rectTransform.localPosition = originalPos;
     }
 }

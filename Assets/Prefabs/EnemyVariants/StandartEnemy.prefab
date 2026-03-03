@@ -114,12 +114,14 @@ MonoBehaviour:
   hitFlickerDuration: 0.3
   rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 1
-  minExperience: 2
-  maxExperience: 8
+  minExperience: 6
+  maxExperience: 15
   baseScoreValue: 10
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
-  baseXPValue: 5
-  dropChance: 0.36
+  shootSound: {fileID: 8300000, guid: 7b7fbbf1cc0432e4e84e685597bdd513, type: 3}
+  shootVolume: 0.352
+  baseXPValue: 10
+  dropChance: 0.3
   powerupPrefabs:
   - {fileID: 4283422912967686166, guid: 7331db554f3cc0545a8cd3ccbbd28811, type: 3}
   - {fileID: 5571058714422570428, guid: 820efcc387a414b439cd6e504652f72a, type: 3}
@@ -136,7 +138,7 @@ MonoBehaviour:
   standardSpeed: 1.8
   wiggleMagnitude: 0.56
   trackingSpeed: 4
-  standardShootInterval: 1.9
+  standardShootInterval: 1.6
   standardLaserPrefab: {fileID: 3273883600741729374, guid: 7a56bac16c110ca4089d60deb761563b, type: 3}
 --- !u!58 &5704794866427144889
 CircleCollider2D:

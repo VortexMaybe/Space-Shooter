@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement & Shooting")]
     public float speed = 5f;
-    [SerializeField] float baseFireRate = 0.5f;
+    [SerializeField] private float baseFireRate = 0.27f;
     private float fireRateModifier = 1f;
     float nextFireTime = 0f;
     [SerializeField] GameObject laser;
@@ -77,12 +77,14 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyFireRateUpgrade(PowerUpTier tier)
     {
-        float bonus = 0.15f;
-        if (tier == PowerUpTier.Silver) bonus = 0.25f;
-        if (tier == PowerUpTier.Gold) bonus = 0.35f;
+        float bonus = 0.05f;
+        if (tier == PowerUpTier.Silver) bonus = 0.10f;
+        if (tier == PowerUpTier.Gold) bonus = 0.15f;
 
-        fireRateModifier += bonus;
-        currentFireRate = baseFireRate / fireRateModifier;
+        baseFireRate -= (baseFireRate * bonus);
+        if (baseFireRate < 0.05f) baseFireRate = 0.05f;
+
+        currentFireRate = baseFireRate;
         activeFireRate = currentFireRate;
 
         ShowFloatingText($"Fire Rate +{bonus * 100}%", Color.cyan);
@@ -104,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
         {
             case PowerUpType.RapidFire:
                 ApplyFireRateUpgrade(tier);
-                StartCoroutine(RapidFireRoutine(5f * effectMultiplier));
                 break;
 
             case PowerUpType.Speed:
@@ -131,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case PowerUpType.MegaXP:
-                int xpAmount = (tier == PowerUpTier.Gold) ? 100 : Random.Range(20, 50);
+                int xpAmount = (tier == PowerUpTier.Gold) ? 100 : Random.Range(20, 75);
                 if (tier == PowerUpTier.Gold)
                 {
                     EnemyBase[] allEnemies = FindObjectsOfType<EnemyBase>();

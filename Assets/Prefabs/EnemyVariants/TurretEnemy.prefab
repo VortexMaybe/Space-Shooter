@@ -106,19 +106,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cf2734f311b5844b90adb4e2a39c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  audioSource: {fileID: 6094981438226413644, guid: 9c6023ac27b10ee41be4431cc4323a07, type: 3}
+  audioSource: {fileID: 299569336845582052}
   deathSound: {fileID: 8300000, guid: 81ea8898e3ddee14f84c2e9e14d36b1d, type: 3}
   customVolume: 5.6
   deathEffectPrefab: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
-  maxHealth: 2
-  hitFlickerDuration: 0.1
+  maxHealth: 3
+  hitFlickerDuration: 0.35
   rotationLerpSpeed: 1.5
   spawnInvulnerabilityTime: 1
-  minExperience: 5
-  maxExperience: 13
-  baseScoreValue: 10
+  minExperience: 14
+  maxExperience: 20
+  baseScoreValue: 14
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
-  baseXPValue: 5
+  shootSound: {fileID: 8300000, guid: 5bfb7eaed40eba442939b6d3e72d36ff, type: 3}
+  shootVolume: 0.512
+  baseXPValue: 10
   dropChance: 0.2
   powerupPrefabs:
   - {fileID: 4283422912967686166, guid: 7331db554f3cc0545a8cd3ccbbd28811, type: 3}

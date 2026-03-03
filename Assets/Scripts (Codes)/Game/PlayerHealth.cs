@@ -75,14 +75,17 @@ public class PlayerHealth : MonoBehaviour
                 audioSource.PlayOneShot(damageSound);
             }
 
-            return; // Щитът пое удара, играчът не получава щети.
+            return;
         }
 
-        // Ако е в имунно състояние (след обикновен удар), не прави нищо.
         if (isInvulnerable) return;
 
-        // 2. ОБИКНОВЕН УДАР (Ако няма щит)
         isInvulnerable = true;
+
+        if (CameraShake.instance != null)
+        {
+            CameraShake.instance.Shake(0.2f, 0.3f);
+        }
 
         if (GameManager.instance != null)
         {
@@ -140,7 +143,7 @@ public class PlayerHealth : MonoBehaviour
     {
         playerLifes += amount;
 
-        playerLifes = Mathf.Min(playerLifes, 3); // Може да промениш 3, ако имаш maxLifes
+        playerLifes = Mathf.Min(playerLifes, 3);
 
         if (lifesUI != null)
         {

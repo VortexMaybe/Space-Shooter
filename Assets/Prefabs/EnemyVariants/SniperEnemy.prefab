@@ -106,19 +106,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504de942fece32a48a34292b66ea9cd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  audioSource: {fileID: 6094981438226413644, guid: 9c6023ac27b10ee41be4431cc4323a07, type: 3}
+  audioSource: {fileID: 7621001198120030061}
   deathSound: {fileID: 8300000, guid: 81ea8898e3ddee14f84c2e9e14d36b1d, type: 3}
   customVolume: 5.6
   deathEffectPrefab: {fileID: 2504214343621411470, guid: 3ed0d324122d7b24eaec75c55c74aafc, type: 3}
   maxHealth: 2
-  hitFlickerDuration: 0.1
-  rotationLerpSpeed: 1.5
+  hitFlickerDuration: 0.35
+  rotationLerpSpeed: 1.6
   spawnInvulnerabilityTime: 1
-  minExperience: 2
-  maxExperience: 6
-  baseScoreValue: 10
+  minExperience: 14
+  maxExperience: 20
+  baseScoreValue: 16
   floatingTextPrefab: {fileID: 6054161931911091049, guid: 475994ee9cbdac049bfc518fe98422da, type: 3}
-  baseXPValue: 5
+  shootSound: {fileID: 8300000, guid: ea4985663c75d3e48b3f7820cb42cc6c, type: 3}
+  shootVolume: 0.519
+  baseXPValue: 13
   dropChance: 0.2
   powerupPrefabs:
   - {fileID: 4283422912967686166, guid: 7331db554f3cc0545a8cd3ccbbd28811, type: 3}
@@ -134,7 +136,7 @@ MonoBehaviour:
   - {fileID: 6892580632978718037, guid: fec614dcbef9de149899d03f5629fe3a, type: 3}
   - {fileID: 2919791137500106278, guid: b819783371697d844bfe08ec54a870f8, type: 3}
   sniperSpeed: 2
-  sniperShootInterval: 3
+  sniperShootInterval: 2
   fastLaser2DamagePrefab: {fileID: 8340585001064827922, guid: f79db3b4062c8664b985e7ea60e51be8, type: 3}
 --- !u!58 &6152223442614902532
 CircleCollider2D:
