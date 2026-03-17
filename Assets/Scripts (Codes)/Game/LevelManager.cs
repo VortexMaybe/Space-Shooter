@@ -94,11 +94,11 @@ public class LevelManager : MonoBehaviour
 
         if (currentWorldLevel >= 5)
         {
-            maxPickupsPerPhase = 3;
+            maxPickupsPerPhase = 6;
         }
         else
         {
-            maxPickupsPerPhase = 2;
+            maxPickupsPerPhase = 4;
         }
     }
 
