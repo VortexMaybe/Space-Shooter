@@ -11,9 +11,8 @@ public class BossAI : MonoBehaviour
 
     [Header("Shooting")]
     public GameObject laserPrefab;
-    // Сменихме единичната точка с масив за двете оръдия
     public Transform[] shootPoints;
-    private int currentPointIndex = 0; // За редуването ляво/дясно
+    private int currentPointIndex = 0;
     public float fireRate = 1.5f;
 
     private BossHealth health;
@@ -113,7 +112,6 @@ public class BossAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Тук можеш да добавиш Player.TakeDamage();
             Debug.Log("БОСЪТ ТЕ УДАРИ ПРИ DASH!");
         }
     }

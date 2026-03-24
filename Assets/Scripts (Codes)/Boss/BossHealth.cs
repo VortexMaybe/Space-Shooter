@@ -23,7 +23,6 @@ public class BossHealth : MonoBehaviour
         {
             healthSlider.maxValue = maxHealth;
             healthSlider.value = maxHealth;
-            // По подразбиране го държим изключен, докато анимацията не извика ShowHealthBar
             healthSlider.gameObject.SetActive(false);
         }
     }
