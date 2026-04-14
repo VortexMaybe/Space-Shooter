@@ -13,17 +13,18 @@ public class BossAI : MonoBehaviour
     public GameObject laserPrefab;
     public Transform[] shootPoints;
     private int currentPointIndex = 0;
-    public float fireRate = 1.5f;
 
-    private BossHealth health;
+    // Референция към новия мениджър на кръвта
+    private BossManager bossManager;
 
     void Start()
     {
-        // Запомня позицията след интрото (Idle позицията)
         startPos = transform.position;
-        health = GetComponent<BossHealth>();
 
-        // Изчакваме интрото и смеха да свършат
+        // Търсим новия скрипт BossManager върху Боса
+        bossManager = GetComponent<BossManager>();
+
+        // Изчакваме интрото (можеш да го викаш и от Animation Event ако искаш)
         Invoke("EnableCombat", 2.5f);
     }
 
@@ -31,25 +32,38 @@ public class BossAI : MonoBehaviour
 
     void Update()
     {
-        if (!canAttack) return;
+        if (!canAttack || bossManager == null) return;
 
         if (!IsInvoking("ChooseAttack"))
         {
-            // Във фаза 3 босът става много по-бърз
-            float cooldown = (health.currentPhase == 3) ? 0.8f : 2f;
+            // Изчисляваме фазата на базата на текущата кръв от BossManager
+            int currentPhase = GetCurrentPhase();
+
+            // Във фаза 3 босът атакува по-често
+            float cooldown = (currentPhase == 3) ? 0.8f : 2f;
             Invoke("ChooseAttack", cooldown);
         }
     }
 
+    // Помощна функция, която казва в коя фаза сме според BossManager
+    int GetCurrentPhase()
+    {
+        float hpPercent = bossManager.currentHealth / bossManager.maxHealth;
+        if (hpPercent <= 0.3f) return 3;
+        if (hpPercent <= 0.7f) return 2;
+        return 1;
+    }
+
     void ChooseAttack()
     {
+        int phase = GetCurrentPhase();
         int chance = Random.Range(0, 100);
 
-        if (health.currentPhase == 1)
+        if (phase == 1)
         {
-            LaserAttack(); // Редува ляво и дясно
+            LaserAttack();
         }
-        else if (health.currentPhase == 2)
+        else if (phase == 2)
         {
             if (chance < 30) StartCoroutine(DashAttack());
             else LaserAttack();
@@ -57,23 +71,18 @@ public class BossAI : MonoBehaviour
         else // ФАЗА 3
         {
             if (chance < 50) StartCoroutine(DashAttack());
-            else TripleLaserAttack(); // Стреля мощно от двете страни
+            else TripleLaserAttack();
         }
     }
 
-    // Редува стрелбата между лявото и дясното дуло
     void LaserAttack()
     {
-        if (shootPoints.Length < 2) return; // Проверка дали си сложил точките в Unity
-
+        if (shootPoints.Length < 2) return;
         Transform firePoint = shootPoints[currentPointIndex];
         Instantiate(laserPrefab, firePoint.position, Quaternion.identity);
-
-        // Сменя за следващия път (0 става 1, 1 става 0)
         currentPointIndex = (currentPointIndex == 0) ? 1 : 0;
     }
 
-    // Във фаза 3 стреля ветрилообразно от двете оръдия едновременно!
     void TripleLaserAttack()
     {
         foreach (Transform p in shootPoints)
@@ -89,22 +98,17 @@ public class BossAI : MonoBehaviour
     IEnumerator DashAttack()
     {
         canAttack = false;
-
-        // 1. Dash надолу през екрана
         Vector3 target = new Vector3(transform.position.x, -12f, 0);
         while (Vector3.Distance(transform.position, target) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, dashSpeed * Time.deltaTime);
             yield return null;
         }
-
-        // 2. Връщане нагоре към старта
         while (Vector3.Distance(transform.position, startPos) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, startPos, returnSpeed * Time.deltaTime);
             yield return null;
         }
-
         canAttack = true;
     }
 
